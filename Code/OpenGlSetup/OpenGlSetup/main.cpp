@@ -30,6 +30,18 @@ using namespace glm;
 int windowWidth;
 int windowHeight;
 
+//VAO vertex attribute positions in correspondence to vertex attribute type
+enum VAO_IDs { Triangles, Indices, Colours, Textures, NumVAOs = 2 };
+//VAOs
+GLuint VAOs[NumVAOs];
+
+//Buffer types
+enum Buffer_IDs { ArrayBuffer, NumBuffers = 4 };
+//Buffer objects
+GLuint Buffers[NumBuffers];
+
+//Shader program
+GLuint program;
 
 //Transformations
 //Relative position within world space
@@ -56,6 +68,19 @@ float lastFrame = 0.0f;
 
 #define RENDER_DISTANCE 128 //Render width of map
 #define MAP_SIZE RENDER_DISTANCE * RENDER_DISTANCE //Size of map in x & z space
+
+//Amount of chunks across one dimension
+const int squaresRow = RENDER_DISTANCE - 1;
+//Two triangles per square to form a 1x1 chunk
+const int trianglesPerSquare = 2;
+
+//Amount of triangles on map
+const int trianglesGrid = squaresRow * squaresRow * trianglesPerSquare;
+GLfloat(*terrainVertices)[6] = new GLfloat[MAP_SIZE][6];
+//Generation of height map indices - ALLOCATED ON HEAP TO AVOID STACK OVERFLOW
+GLuint(*terrainIndices)[3] = new GLuint[trianglesGrid][3];
+
+
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -130,9 +155,116 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
     {
         cameraPosition += normalize(cross(cameraFront, cameraUp)) * movementSpeed;
     }
+   // cout << "camers pos: " << cameraPosition.x << ", " << cameraPosition.y << cameraPosition.z << "\n";
+}
+void SetUpTerrain() {
+
+    //Positions to start drawing from (centered around origin)
+    float drawingStartPosition = 4.0f;
+    float columnVerticesOffset = drawingStartPosition;
+    float rowVerticesOffset = drawingStartPosition;
+
+    int rowIndex = 0;
+    for (int i = 0; i < MAP_SIZE; i++)
+    {
+        //Generation of x & z vertices for horizontal plane
+        terrainVertices[i][0] = columnVerticesOffset;
+        terrainVertices[i][1] = 0.0f;
+        terrainVertices[i][2] = rowVerticesOffset;
+
+        //Colour
+        terrainVertices[i][3] = 0.0f;
+        terrainVertices[i][4] = 0.75f;
+        terrainVertices[i][5] = 0.25f;
+
+        //Shifts x position across for next triangle along grid
+        columnVerticesOffset = columnVerticesOffset + -0.0625f;
+
+        //Indexing of each chunk within row
+        rowIndex++;
+        //True when all triangles of the current row have been generated
+        if (rowIndex == RENDER_DISTANCE)
+        {
+            //Resets for next row of triangles
+            rowIndex = 0;
+            //Resets x position for next row of triangles
+            columnVerticesOffset = drawingStartPosition;
+            //Shifts z position
+            rowVerticesOffset = rowVerticesOffset + -0.0625f;
+        }
+    }
+    //Positions to start mapping indices from
+    int columnIndicesOffset = 0;
+    int rowIndicesOffset = 0;
+
+    //Generation of map indices in the form of chunks (1x1 right angle triangle squares)
+    rowIndex = 0;
+    for (int i = 0; i < trianglesGrid - 1; i += 2)
+    {
+        terrainIndices[i][0] = columnIndicesOffset + rowIndicesOffset; //top left
+        terrainIndices[i][1] = RENDER_DISTANCE + columnIndicesOffset + rowIndicesOffset; //bottom left
+        terrainIndices[i][2] = 1 + columnIndicesOffset + rowIndicesOffset; //top right
+
+        terrainIndices[i + 1][0] = 1 + columnIndicesOffset + rowIndicesOffset; //top right
+        terrainIndices[i + 1][1] = RENDER_DISTANCE + columnIndicesOffset + rowIndicesOffset; //bottom left
+        terrainIndices[i + 1][2] = 1 + RENDER_DISTANCE + columnIndicesOffset + rowIndicesOffset; //bottom right
+
+        //Shifts x position across for next chunk along grid
+        columnIndicesOffset = columnIndicesOffset + 1;
+
+        //Indexing of each chunk within row
+        rowIndex++;
+
+        //True when all chunks of the current row have been generated
+        if (rowIndex == squaresRow)
+        {
+            //Resets for next row of chunks
+            rowIndex = 0;
+            //Resets x position for next row of chunks
+            columnIndicesOffset = 0;
+            //Shifts z position
+            rowIndicesOffset = rowIndicesOffset + RENDER_DISTANCE;
+        }
+    }
+
+    //Sets index of VAO
+    glGenVertexArrays(NumVAOs, VAOs);
+    //Binds VAO to a buffer
+    glBindVertexArray(VAOs[0]);
+    //Sets indexes of all required buffer objects
+    glGenBuffers(NumBuffers, Buffers);
+
+    //Binds vertex object to array buffer
+    glBindBuffer(GL_ARRAY_BUFFER, Buffers[Triangles]);
+    //Allocates buffer memory for the vertices of the 'Triangles' buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_SIZE * 6, terrainVertices, GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(terrainVertices), terrainVertices, GL_STATIC_DRAW);
+
+    //Binding & allocation for indices
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[Indices]);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(terrainIndices), terrainIndices, GL_STATIC_DRAW);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * trianglesGrid * 3, terrainIndices, GL_STATIC_DRAW);
+
+    //Allocation & indexing of vertex attribute memory for vertex shader
+    //Positions
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    //Colours
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    //Unbinding
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 }
 int main()
 {
+   
     //Initialisation of GLFW
     glfwInit();
 
@@ -140,7 +272,7 @@ int main()
     windowHeight = 720;
 
     //Initialisation of 'GLFWwindow' object
-    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Lab5", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "CW2 Scene", NULL, NULL);
 
     //Checks if window has been successfully instantiated
     if (window == NULL)
@@ -164,6 +296,9 @@ int main()
 
     //Loading of shaders
     Shader Shaders("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
+    Shader TerrainShader("shaders/TerrainVertexShader.vert", "shaders/TerrainFragmentShader.frag");
+    Model Rock("media/rock/Rock07-Base.obj");
+    Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
     Shaders.use();
 
     //Sets the viewport size within the window to match the window size of 1280x720
@@ -175,11 +310,81 @@ int main()
     //Sets the mouse_callback() function as the callback for the mouse movement event
     glfwSetCursorPosCallback(window, Mouse_CallBack);
 
+    // progress
+    SetUpTerrain();
+
+    //Model matrix
+    mat4 model = mat4(1.0f);
+    //Scaling to zoom in
+    model = scale(model, vec3(0.025f, 0.025f, 0.025f));
+    //Looking straight forward
+    model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
+    //Elevation to look upon terrain
+    model = translate(model, vec3(0.0f, 40.0f, -50.0f));
+
+    //Model for terrain
+    mat4 TerrainModel = mat4(1.0f);
+    
+    //Projection matrix
+    mat4 projection = perspective(radians(45.0f), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
+
+    //Debug output
+    std::cout << "Number of indices: " << (trianglesGrid * 3) << endl;
+    std::cout << "Camera position: " << cameraPosition.x << ", " << cameraPosition.y << ", " << cameraPosition.z << endl;
+
+   
+   
+
+    glEnable(GL_DEPTH_TEST);
     //Render loop
     while (glfwWindowShouldClose(window) == false)
     {
-      
+        //Time
+        float currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        //Input
+        ProcessUserInput(window);
+
+        //Rendering
+
+        //Rendering
+        glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display on cleared window
+        glClear(GL_COLOR_BUFFER_BIT); //Clears the colour buffer
+        glClear(GL_DEPTH_BUFFER_BIT); //Might need
+
+        glEnable(GL_CULL_FACE); //Discards all back-facing triangles
+
+        //Transformations
+        mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
+        mat4 mvp = projection * view * TerrainModel;
+
+        TerrainShader.use();
+        TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
+
+        //Render terrain
+        glBindVertexArray(VAOs[0]);
+        glDrawElements(GL_TRIANGLES, trianglesGrid * 3, GL_UNSIGNED_INT, 0);
+
+        //Drawing models
+        Shaders.use();
+        mvp = projection * view * model;
+        Shaders.setMat4("mvpIn", mvp);
+        Tree.Draw(Shaders);
+
+        //Check for OpenGL errors
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR) {
+            std::cout << "OpenGL Error: " << err << endl;
+        }
+
+        //Refreshing
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
+    delete[] terrainVertices;
+    delete[] terrainIndices;
 
     //Safely terminates GLFW
     glfwTerminate();
