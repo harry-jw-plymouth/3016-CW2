@@ -20,6 +20,8 @@
 //GENERAL
 #include "Header.h"
 
+#include "FastNoiseLite.h"
+
 using namespace std;
 using namespace glm;
 
@@ -66,7 +68,7 @@ float deltaTime = 0.0f;
 //Last value of time change
 float lastFrame = 0.0f;
 
-#define RENDER_DISTANCE 128 //Render width of map
+#define RENDER_DISTANCE 256 //Render width of map
 #define MAP_SIZE RENDER_DISTANCE * RENDER_DISTANCE //Size of map in x & z space
 
 //Amount of chunks across one dimension
@@ -80,8 +82,8 @@ GLfloat(*terrainVertices)[6] = new GLfloat[MAP_SIZE][6];
 //Generation of height map indices - ALLOCATED ON HEAP TO AVOID STACK OVERFLOW
 GLuint(*terrainIndices)[3] = new GLuint[trianglesGrid][3];
 
-
-
+//flag for updatingwindow
+bool UpdateNeeded = true;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -113,6 +115,10 @@ void Mouse_CallBack(GLFWwindow* window, double xpos, double ypos) {
     //Adjusts yaw & pitch values against changes in positions
     cameraYaw += xOffset;
     cameraPitch += yOffset;
+    //flag to update window in loop
+    if (cameraPitch != 0 || cameraYaw != 0) {
+        UpdateNeeded = true;
+    }
 
     //Prevents turning up & down beyond 90 degrees to look backwards
     if (cameraPitch > 89.0f)
@@ -142,22 +148,43 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
     if (glfwGetKey(WindowIn, GLFW_KEY_W) == GLFW_PRESS)
     {
         cameraPosition += movementSpeed * cameraFront;
+        UpdateNeeded = true;
     }
     if (glfwGetKey(WindowIn, GLFW_KEY_S) == GLFW_PRESS)
     {
         cameraPosition -= movementSpeed * cameraFront;
+        UpdateNeeded = true;
     }
     if (glfwGetKey(WindowIn, GLFW_KEY_A) == GLFW_PRESS)
     {
         cameraPosition -= normalize(cross(cameraFront, cameraUp)) * movementSpeed;
+        UpdateNeeded = true;
     }
     if (glfwGetKey(WindowIn, GLFW_KEY_D) == GLFW_PRESS)
     {
         cameraPosition += normalize(cross(cameraFront, cameraUp)) * movementSpeed;
+        UpdateNeeded = true;
     }
    // cout << "camers pos: " << cameraPosition.x << ", " << cameraPosition.y << cameraPosition.z << "\n";
 }
 void SetUpTerrain() {
+    //Biome noise
+
+    FastNoiseLite TerrainNoise;
+    TerrainNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+    TerrainNoise.SetFrequency(0.05f);
+    int TerrainSeed = rand() % 100;
+    TerrainNoise.SetSeed(TerrainSeed);
+
+    //Biome noise
+    FastNoiseLite BiomeNoise;
+    BiomeNoise.SetNoiseType(FastNoiseLite::NoiseType_Cellular);
+    BiomeNoise.SetFrequency(0.05f);
+    int biomeSeed = rand() % 100;
+    TerrainNoise.SetSeed(biomeSeed);
+
+
+    float centerX = RENDER_DISTANCE * 0.5f; float centerY = RENDER_DISTANCE * 0.5f;
 
     //Positions to start drawing from (centered around origin)
     float drawingStartPosition = 4.0f;
@@ -169,7 +196,7 @@ void SetUpTerrain() {
     {
         //Generation of x & z vertices for horizontal plane
         terrainVertices[i][0] = columnVerticesOffset;
-        terrainVertices[i][1] = 0.0f;
+      //  terrainVertices[i][1] = 0.0f;
         terrainVertices[i][2] = rowVerticesOffset;
 
         //Colour
@@ -193,6 +220,44 @@ void SetUpTerrain() {
             rowVerticesOffset = rowVerticesOffset + -0.0625f;
         }
     }
+    //Terrain vertice index
+    int i = 0;
+    //Using x & y nested for loop in order to apply noise 2-dimensionally
+    for (int y = 0; y < RENDER_DISTANCE; y++)
+    {
+        for (int x = 0; x < RENDER_DISTANCE; x++)
+        {
+            //Setting of height from 2D noise value at respective x & y coordinate
+            //terrainVertices[i][1] = TerrainNoise.GetNoise((float)x, (float)y);
+            float centerX = RENDER_DISTANCE * 0.5f;
+            float centerY = RENDER_DISTANCE * 0.5f;
+            float dx = x - centerX;
+            float dy = y - centerY; 
+            float dist = sqrt(dx * dx + dy * dy);
+            float maxDist = sqrt(centerX * centerX + centerY * centerY);
+            float falloff = 1.0f - (dist / maxDist); falloff = std::max(falloff, 0.0f); 
+            float noise = TerrainNoise.GetNoise((float)x, (float)y); 
+            terrainVertices[i][1] = falloff * 5.0f + noise * 0.5f;
+
+            float biomeValue = BiomeNoise.GetNoise((float)x, (float)y);
+
+            if (biomeValue <= -0.75f) //Plains
+            {
+                terrainVertices[i][3] = 0.0f;
+                terrainVertices[i][4] = 0.75f;
+                terrainVertices[i][5] = 0.25f;
+            }
+            else //Desert
+            {
+                terrainVertices[i][3] = 1.0f;
+                terrainVertices[i][4] = 1.0f;
+                terrainVertices[i][5] = 0.5f;
+            }
+            i++;
+        }
+
+    }
+
     //Positions to start mapping indices from
     int columnIndicesOffset = 0;
     int rowIndicesOffset = 0;
@@ -347,31 +412,33 @@ int main()
         //Input
         ProcessUserInput(window);
 
-        //Rendering
+        if (UpdateNeeded) {
+            UpdateNeeded = false;
 
-        //Rendering
-        glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display on cleared window
-        glClear(GL_COLOR_BUFFER_BIT); //Clears the colour buffer
-        glClear(GL_DEPTH_BUFFER_BIT); //Might need
+            //Rendering
+            glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display on cleared window
+            glClear(GL_COLOR_BUFFER_BIT); //Clears the colour buffer
+            glClear(GL_DEPTH_BUFFER_BIT); //Might need
 
-        glEnable(GL_CULL_FACE); //Discards all back-facing triangles
+            glEnable(GL_CULL_FACE); //Discards all back-facing triangles
 
-        //Transformations
-        mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
-        mat4 mvp = projection * view * TerrainModel;
+            //Transformations
+            mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
+            mat4 mvp = projection * view * TerrainModel;
 
-        TerrainShader.use();
-        TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
+            TerrainShader.use();
+            TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
 
-        //Render terrain
-        glBindVertexArray(VAOs[0]);
-        glDrawElements(GL_TRIANGLES, trianglesGrid * 3, GL_UNSIGNED_INT, 0);
+            //Render terrain
+            glBindVertexArray(VAOs[0]);
+            glDrawElements(GL_TRIANGLES, trianglesGrid * 3, GL_UNSIGNED_INT, 0);
 
-        //Drawing models
-        Shaders.use();
-        mvp = projection * view * model;
-        Shaders.setMat4("mvpIn", mvp);
-        Tree.Draw(Shaders);
+            //Drawing models
+            Shaders.use();
+            mvp = projection * view * model;
+            Shaders.setMat4("mvpIn", mvp);
+            Tree.Draw(Shaders);
+        }
 
         //Check for OpenGL errors
         GLenum err = glGetError();
