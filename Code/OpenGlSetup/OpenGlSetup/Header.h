@@ -7,6 +7,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 void ProcessUserInput(GLFWwindow* WindowIn);
 void Mouse_CallBack(GLFWwindow* window, double xpos, double ypos);
+void CheckForCollision();
 void SetUpTerrain();
 
 //GLuint program;

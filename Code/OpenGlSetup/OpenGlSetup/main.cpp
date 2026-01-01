@@ -47,7 +47,7 @@ GLuint program;
 
 //Transformations
 //Relative position within world space
-vec3 cameraPosition = vec3(0.0f, 1.0f, 0.0f);
+vec3 cameraPosition = vec3(0.0f, 5.0f, 0.0f);
 //The direction of travel
 vec3 cameraFront = vec3(0.0f, 0.0f, -1.0f);
 //Up position within world space
@@ -67,6 +67,11 @@ float cameraLastYPos = 600.0f / 2.0f;
 float deltaTime = 0.0f;
 //Last value of time change
 float lastFrame = 0.0f;
+
+//Start Pos for terrain (both x and y)
+float drawingStartPosition = 4.0f;
+
+float Tile_Size = 0.0625f;
 
 #define RENDER_DISTANCE 256 //Render width of map
 #define MAP_SIZE RENDER_DISTANCE * RENDER_DISTANCE //Size of map in x & z space
@@ -137,6 +142,18 @@ void Mouse_CallBack(GLFWwindow* window, double xpos, double ypos) {
     direction.z = sin(radians(cameraYaw)) * cos(radians(cameraPitch));
     cameraFront = normalize(direction);
 }
+float GetHeightOfTerrainAtCurrentPos() {
+    int CurrentX = (int)((drawingStartPosition - cameraPosition.x) / Tile_Size);
+    int CurrentZ = (int)((drawingStartPosition - cameraPosition.z) / Tile_Size);
+    return terrainVertices[CurrentZ * RENDER_DISTANCE + CurrentX][1];
+    
+}
+void CheckForCollision() {
+    float CurrentPosTerrainHeight = GetHeightOfTerrainAtCurrentPos();
+    if (cameraPosition.y < CurrentPosTerrainHeight + 0.5) {
+        cameraPosition.y = CurrentPosTerrainHeight + 0.5;
+    }
+}
 void ProcessUserInput(GLFWwindow* WindowIn) {
     if (glfwGetKey(WindowIn, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -165,8 +182,11 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
         cameraPosition += normalize(cross(cameraFront, cameraUp)) * movementSpeed;
         UpdateNeeded = true;
     }
+    CheckForCollision();
+
    // cout << "camers pos: " << cameraPosition.x << ", " << cameraPosition.y << cameraPosition.z << "\n";
 }
+
 void SetUpTerrain() {
     //Biome noise
 
@@ -187,7 +207,7 @@ void SetUpTerrain() {
     float centerX = RENDER_DISTANCE * 0.5f; float centerY = RENDER_DISTANCE * 0.5f;
 
     //Positions to start drawing from (centered around origin)
-    float drawingStartPosition = 4.0f;
+    
     float columnVerticesOffset = drawingStartPosition;
     float rowVerticesOffset = drawingStartPosition;
 
@@ -205,7 +225,7 @@ void SetUpTerrain() {
         terrainVertices[i][5] = 0.25f;
 
         //Shifts x position across for next triangle along grid
-        columnVerticesOffset = columnVerticesOffset + -0.0625f;
+        columnVerticesOffset = columnVerticesOffset + -Tile_Size;
 
         //Indexing of each chunk within row
         rowIndex++;
@@ -217,7 +237,7 @@ void SetUpTerrain() {
             //Resets x position for next row of triangles
             columnVerticesOffset = drawingStartPosition;
             //Shifts z position
-            rowVerticesOffset = rowVerticesOffset + -0.0625f;
+            rowVerticesOffset = rowVerticesOffset + -Tile_Size;
         }
     }
     //Terrain vertice index

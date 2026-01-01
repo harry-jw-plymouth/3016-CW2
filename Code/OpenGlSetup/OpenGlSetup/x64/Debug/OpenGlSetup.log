@@ -1,3 +1,8 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(538,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGlSetup.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   main.cpp
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(154,52): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(154,52): warning C4244:         with
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(154,52): warning C4244:         [
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(154,52): warning C4244:             T=float
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(154,52): warning C4244:         ]
   OpenGlSetup.vcxproj -> C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\x64\Debug\3016CW2.exe
