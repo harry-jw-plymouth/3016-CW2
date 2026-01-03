@@ -45,6 +45,7 @@ GLuint Buffers[NumBuffers];
 //Shader program
 GLuint program;
 
+
 //Transformations
 //Relative position within world space
 vec3 cameraPosition = vec3(0.0f, 5.0f, 0.0f);
@@ -92,6 +93,11 @@ bool UpdateNeeded = true;
 
 //Tallest point of terrain 
 vec3 TerrainTallestPointCoords;
+
+//list of scattered trees coordinates 
+const int  NumberOfTrees = 10;
+vec3 TreesPositions[NumberOfTrees];
+int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500,600,700,800,900,10 };
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -270,15 +276,15 @@ void SetUpTerrain() {
 
             if (biomeValue <= -0.75f) //Plains
             {
-                terrainVertices[i][3] = 0.0f;
+                terrainVertices[i][3] = 0.45f;
                 terrainVertices[i][4] = 0.75f;
-                terrainVertices[i][5] = 0.25f;
+                terrainVertices[i][5] = 0.35f;
             }
-            else //Desert
+            else //Deeper forest
             {
-                terrainVertices[i][3] = 1.0f;
-                terrainVertices[i][4] = 1.0f;
-                terrainVertices[i][5] = 0.5f;
+                terrainVertices[i][3] = 0.10f;
+                terrainVertices[i][4] = 0.45f;
+                terrainVertices[i][5] = 0.20f;
             }
             //check to see if new height is taller than current tallest
             if (terrainVertices[i][1] > TallestTerrainPos) {
@@ -364,6 +370,13 @@ void SetUpTerrain() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+    //Get Coordinates for trees to place around
+    for (int i = 0; i < NumberOfTrees; i++) {
+        TreesPositions[i].x = terrainVertices[IndexesToPlaceTrees[i]][0];
+        TreesPositions[i].y = terrainVertices[IndexesToPlaceTrees[i]][1];
+        TreesPositions[i].z = terrainVertices[IndexesToPlaceTrees[i]][2];
+    }
+
 
 }
 int main()
@@ -419,9 +432,11 @@ int main()
 
     //Model matrix
     mat4 model = mat4(1.0f);
+    mat4 ScatteredModel = mat4(1.0f);
    
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
+    ScatteredModel = rotate(ScatteredModel, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
     //Elevation to look upon terrain
     model = translate(model, TerrainTallestPointCoords);
 
@@ -470,9 +485,23 @@ int main()
 
             //Drawing models
             Shaders.use();
+            //draw main tree at tallest point
             mvp = projection * view * model;
             Shaders.setMat4("mvpIn", mvp);
             Tree.Draw(Shaders);
+
+            //Draw scattered trees
+            for (int i = 0; i < NumberOfTrees; i++) {
+                mat4 ScatteredModel = mat4(1.0f);
+                ScatteredModel = translate(ScatteredModel, TreesPositions[i]);
+                ScatteredModel = scale(ScatteredModel, vec3(0.025f, 0.025f, 0.025f));
+
+                mat4 mvp = projection * view * ScatteredModel;
+                Shaders.setMat4("mvpIn", mvp);
+
+                Tree.Draw(Shaders);
+                
+            }
         }
 
         //Check for OpenGL errors
