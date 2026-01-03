@@ -45,6 +45,7 @@ GLuint Buffers[NumBuffers];
 //Shader program
 GLuint program;
 
+int HighestIndex;
 
 //Transformations
 //Relative position within world space
@@ -95,9 +96,16 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 10;
+const int  NumberOfTrees = 100;
 vec3 TreesPositions[NumberOfTrees];
-int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500,600,700,800,900,10 };
+int indexesToPlaceTrees[NumberOfTrees];
+
+//int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500
+//,600,700,800,900,10,
+//100,1500,1800, 2300,2800
+//,3300, 3600, 4000, 4300, 4600,
+//4800, 4900, 5300, 5500, 5900,
+//6000,6400, 6500, 6900, 7200};
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -194,6 +202,15 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
     CheckForCollision();
 
    // cout << "camers pos: " << cameraPosition.x << ", " << cameraPosition.y << cameraPosition.z << "\n";
+}
+void SetPosForTrees() {
+    int Current = 0;
+     for (int i = 0; i <NumberOfTrees ; i++) {
+        TreesPositions[i].x = terrainVertices[i*HighestIndex/NumberOfTrees][0];
+        TreesPositions[i].y = terrainVertices[i * HighestIndex / NumberOfTrees][1];
+        TreesPositions[i].z = terrainVertices[i * HighestIndex / NumberOfTrees][2];
+        Current += HighestIndex / NumberOfTrees;
+    }
 }
 
 void SetUpTerrain() {
@@ -294,10 +311,12 @@ void SetUpTerrain() {
 
             i++;
 
+
  
         }
 
     }
+    HighestIndex = i;
     TerrainTallestPointCoords.x = terrainVertices[TallestPosIndex][0];
     TerrainTallestPointCoords.y = terrainVertices[TallestPosIndex][1];
     TerrainTallestPointCoords.z = terrainVertices[TallestPosIndex][2];
@@ -371,11 +390,7 @@ void SetUpTerrain() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     //Get Coordinates for trees to place around
-    for (int i = 0; i < NumberOfTrees; i++) {
-        TreesPositions[i].x = terrainVertices[IndexesToPlaceTrees[i]][0];
-        TreesPositions[i].y = terrainVertices[IndexesToPlaceTrees[i]][1];
-        TreesPositions[i].z = terrainVertices[IndexesToPlaceTrees[i]][2];
-    }
+    SetPosForTrees();
 
 
 }
