@@ -90,6 +90,9 @@ GLuint(*terrainIndices)[3] = new GLuint[trianglesGrid][3];
 //flag for updatingwindow
 bool UpdateNeeded = true;
 
+//Tallest point of terrain 
+vec3 TerrainTallestPointCoords;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     //Resizes window based on contemporary width & height values
@@ -150,8 +153,8 @@ float GetHeightOfTerrainAtCurrentPos() {
 }
 void CheckForCollision() {
     float CurrentPosTerrainHeight = GetHeightOfTerrainAtCurrentPos();
-    if (cameraPosition.y < CurrentPosTerrainHeight + 0.5) {
-        cameraPosition.y = CurrentPosTerrainHeight + 0.5;
+    if (cameraPosition.y < CurrentPosTerrainHeight + 0.25) {
+        cameraPosition.y = CurrentPosTerrainHeight + 0.25;
     }
 }
 void ProcessUserInput(GLFWwindow* WindowIn) {
@@ -220,9 +223,9 @@ void SetUpTerrain() {
         terrainVertices[i][2] = rowVerticesOffset;
 
         //Colour
-        terrainVertices[i][3] = 0.0f;
-        terrainVertices[i][4] = 0.75f;
-        terrainVertices[i][5] = 0.25f;
+        terrainVertices[i][3] = 9.0f;
+        terrainVertices[i][4] = 121.75f;
+        terrainVertices[i][5] = 105.25f;
 
         //Shifts x position across for next triangle along grid
         columnVerticesOffset = columnVerticesOffset + -Tile_Size;
@@ -242,6 +245,10 @@ void SetUpTerrain() {
     }
     //Terrain vertice index
     int i = 0;
+
+    //Highest point of terrain updated in loop
+    float TallestTerrainPos = -200;
+    int TallestPosIndex = 0;
     //Using x & y nested for loop in order to apply noise 2-dimensionally
     for (int y = 0; y < RENDER_DISTANCE; y++)
     {
@@ -273,10 +280,22 @@ void SetUpTerrain() {
                 terrainVertices[i][4] = 1.0f;
                 terrainVertices[i][5] = 0.5f;
             }
+            //check to see if new height is taller than current tallest
+            if (terrainVertices[i][1] > TallestTerrainPos) {
+                TallestTerrainPos = terrainVertices[i][1];
+                TallestPosIndex = i;
+            }
+
             i++;
+
+ 
         }
 
     }
+    TerrainTallestPointCoords.x = terrainVertices[TallestPosIndex][0];
+    TerrainTallestPointCoords.y = terrainVertices[TallestPosIndex][1];
+    TerrainTallestPointCoords.z = terrainVertices[TallestPosIndex][2];
+    
 
     //Positions to start mapping indices from
     int columnIndicesOffset = 0;
@@ -400,12 +419,11 @@ int main()
 
     //Model matrix
     mat4 model = mat4(1.0f);
-    //Scaling to zoom in
-    model = scale(model, vec3(0.025f, 0.025f, 0.025f));
+   
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
     //Elevation to look upon terrain
-    model = translate(model, vec3(0.0f, 40.0f, -50.0f));
+    model = translate(model, TerrainTallestPointCoords);
 
     //Model for terrain
     mat4 TerrainModel = mat4(1.0f);
@@ -413,13 +431,10 @@ int main()
     //Projection matrix
     mat4 projection = perspective(radians(45.0f), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 
-    //Debug output
-    std::cout << "Number of indices: " << (trianglesGrid * 3) << endl;
-    std::cout << "Camera position: " << cameraPosition.x << ", " << cameraPosition.y << ", " << cameraPosition.z << endl;
 
-   
-   
-
+    //Scaling to zoom in
+    model = scale(model, vec3(0.025f, 0.025f, 0.025f));
+    
     glEnable(GL_DEPTH_TEST);
     //Render loop
     while (glfwWindowShouldClose(window) == false)
