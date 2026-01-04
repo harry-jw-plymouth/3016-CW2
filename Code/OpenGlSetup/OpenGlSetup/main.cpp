@@ -96,12 +96,12 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 100;
+const int  NumberOfTrees = 200;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
 //list of rock model placement positions
-const int  NumberOfRocks = 150;
+const int  NumberOfRocks = 350;
 vec3 RocksPositions[NumberOfRocks];
 
 //int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500
@@ -241,7 +241,7 @@ void SetPosForModels() {
          }
 
          RocksPositions[i].x = terrainVertices[FinalIndex][0];
-         RocksPositions[i].y = terrainVertices[FinalIndex][1];
+         RocksPositions[i].y = terrainVertices[FinalIndex][1]+0.01;
          RocksPositions[i].z = terrainVertices[FinalIndex][2];
          Current += HighestIndex / NumberOfTrees;
      }
@@ -562,7 +562,7 @@ int main()
             for (int i = 0; i < NumberOfRocks; i++) {
                 mat4 ScatteredRockModel = mat4(1.0f);
                 ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
-                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.001f, 0.001f, 0.001f));
+                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0005f, 0.0005f, 0.0005f));
                 mat4 mvp = projection * view * ScatteredRockModel;
                 Shaders.setMat4("mvpIn", mvp);
                 Rock.Draw(Shaders);
