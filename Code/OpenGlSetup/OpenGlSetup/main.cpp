@@ -213,10 +213,22 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
 }
 void SetPosForModels() {
     int Current = 0;
-     for (int i = 0; i <NumberOfTrees ; i++) {
-        TreesPositions[i].x = terrainVertices[i*HighestIndex/NumberOfTrees][0];
-        TreesPositions[i].y = terrainVertices[i * HighestIndex / NumberOfTrees][1];
-        TreesPositions[i].z = terrainVertices[i * HighestIndex / NumberOfTrees][2];
+    int Variance;
+    int FinalIndex = 0;
+    int IndexTemp;
+    for (int i = 0; i <NumberOfTrees ; i++) {
+        //get index with variance
+         FinalIndex = (i* (HighestIndex / NumberOfTrees)) + rand() %  (HighestIndex / NumberOfTrees);
+         
+         //Check Variance doesnt make the index too high
+         if (HighestIndex - 1 < FinalIndex) {
+             FinalIndex = HighestIndex;
+         }
+         
+
+        TreesPositions[i].x = terrainVertices[FinalIndex][0];
+        TreesPositions[i].y = terrainVertices[FinalIndex][1];
+        TreesPositions[i].z = terrainVertices[FinalIndex][2];
         Current += HighestIndex / NumberOfTrees;
     }
      Current = 0;
