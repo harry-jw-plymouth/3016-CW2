@@ -223,8 +223,7 @@ void SetPosForModels() {
          //Check Variance doesnt make the index too high
          if (HighestIndex - 1 < FinalIndex) {
              FinalIndex = HighestIndex;
-         }
-         
+         }   
 
         TreesPositions[i].x = terrainVertices[FinalIndex][0];
         TreesPositions[i].y = terrainVertices[FinalIndex][1];
@@ -233,9 +232,17 @@ void SetPosForModels() {
     }
      Current = 0;
      for (int i = 0; i < NumberOfRocks; i++) {
-         RocksPositions[i].x = terrainVertices[i * HighestIndex / NumberOfRocks][0];
-         RocksPositions[i].y = terrainVertices[i * HighestIndex / NumberOfRocks][1];
-         RocksPositions[i].z = terrainVertices[i * HighestIndex / NumberOfRocks][2];
+         //get index with variance
+          FinalIndex = (i * (HighestIndex / NumberOfRocks)) + rand() % (HighestIndex / NumberOfRocks);
+
+         //Check Variance doesnt make the index too high
+         if (HighestIndex - 1 < FinalIndex) {
+             FinalIndex = HighestIndex;
+         }
+
+         RocksPositions[i].x = terrainVertices[FinalIndex][0];
+         RocksPositions[i].y = terrainVertices[FinalIndex][1];
+         RocksPositions[i].z = terrainVertices[FinalIndex][2];
          Current += HighestIndex / NumberOfTrees;
      }
 }
@@ -555,7 +562,7 @@ int main()
             for (int i = 0; i < NumberOfRocks; i++) {
                 mat4 ScatteredRockModel = mat4(1.0f);
                 ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
-                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0025f, 0.0025f, 0.0025f));
+                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.001f, 0.001f, 0.001f));
                 mat4 mvp = projection * view * ScatteredRockModel;
                 Shaders.setMat4("mvpIn", mvp);
                 Rock.Draw(Shaders);

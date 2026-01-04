@@ -7,4 +7,5 @@ C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSet
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(179,52): warning C4244:         ]
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(218,9): warning C4101: 'IndexTemp': unreferenced local variable
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(216,9): warning C4101: 'Variance': unreferenced local variable
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   OpenGlSetup.vcxproj -> C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\x64\Debug\3016CW2.exe
