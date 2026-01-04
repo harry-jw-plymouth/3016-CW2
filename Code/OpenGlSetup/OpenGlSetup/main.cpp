@@ -100,6 +100,10 @@ const int  NumberOfTrees = 100;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
+//list of rock model placement positions
+const int  NumberOfRocks = 150;
+vec3 RocksPositions[NumberOfRocks];
+
 //int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500
 //,600,700,800,900,10,
 //100,1500,1800, 2300,2800
@@ -162,6 +166,10 @@ void Mouse_CallBack(GLFWwindow* window, double xpos, double ypos) {
 float GetHeightOfTerrainAtCurrentPos() {
     int CurrentX = (int)((drawingStartPosition - cameraPosition.x) / Tile_Size);
     int CurrentZ = (int)((drawingStartPosition - cameraPosition.z) / Tile_Size);
+    
+    if (CurrentX < 0 || CurrentX >= RENDER_DISTANCE || CurrentZ >= RENDER_DISTANCE || CurrentZ < 0) {
+        return 0;
+    }
     return terrainVertices[CurrentZ * RENDER_DISTANCE + CurrentX][1];
     
 }
@@ -203,7 +211,7 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
 
    // cout << "camers pos: " << cameraPosition.x << ", " << cameraPosition.y << cameraPosition.z << "\n";
 }
-void SetPosForTrees() {
+void SetPosForModels() {
     int Current = 0;
      for (int i = 0; i <NumberOfTrees ; i++) {
         TreesPositions[i].x = terrainVertices[i*HighestIndex/NumberOfTrees][0];
@@ -211,6 +219,13 @@ void SetPosForTrees() {
         TreesPositions[i].z = terrainVertices[i * HighestIndex / NumberOfTrees][2];
         Current += HighestIndex / NumberOfTrees;
     }
+     Current = 0;
+     for (int i = 0; i < NumberOfRocks; i++) {
+         RocksPositions[i].x = terrainVertices[i * HighestIndex / NumberOfRocks][0];
+         RocksPositions[i].y = terrainVertices[i * HighestIndex / NumberOfRocks][1];
+         RocksPositions[i].z = terrainVertices[i * HighestIndex / NumberOfRocks][2];
+         Current += HighestIndex / NumberOfTrees;
+     }
 }
 
 void SetUpTerrain() {
@@ -390,8 +405,14 @@ void SetUpTerrain() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     //Get Coordinates for trees to place around
-    SetPosForTrees();
+    SetPosForModels();
 
+
+}
+void DrawTrees() {
+
+}
+void DrawRocks() {
 
 }
 int main()
@@ -448,6 +469,7 @@ int main()
     //Model matrix
     mat4 model = mat4(1.0f);
     mat4 ScatteredModel = mat4(1.0f);
+    mat4 ScatteredRockModel = mat4(1.0f);
    
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
@@ -516,6 +538,16 @@ int main()
 
                 Tree.Draw(Shaders);
                 
+            }
+            //Draw scattered rocks
+            for (int i = 0; i < NumberOfRocks; i++) {
+                mat4 ScatteredRockModel = mat4(1.0f);
+                ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
+                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0025f, 0.0025f, 0.0025f));
+                mat4 mvp = projection * view * ScatteredRockModel;
+                Shaders.setMat4("mvpIn", mvp);
+                Rock.Draw(Shaders);
+
             }
         }
 
