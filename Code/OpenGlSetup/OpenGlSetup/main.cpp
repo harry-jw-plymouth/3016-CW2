@@ -469,8 +469,11 @@ int main()
     //Loading of shaders
     Shader Shaders("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
     Shader TerrainShader("shaders/TerrainVertexShader.vert", "shaders/TerrainFragmentShader.frag");
+
+    //Loading Of Models
     Model Rock("media/rock/Rock07-Base.obj");
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
+    Model CenterTree("media/CenterTree/MainTree.obj");
     Shaders.use();
 
     //Sets the viewport size within the window to match the window size of 1280x720
@@ -489,12 +492,15 @@ int main()
     mat4 model = mat4(1.0f);
     mat4 ScatteredModel = mat4(1.0f);
     mat4 ScatteredRockModel = mat4(1.0f);
+    mat4 MainTreeModel = mat4(1.0f);
    
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
     ScatteredModel = rotate(ScatteredModel, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
     //Elevation to look upon terrain
     model = translate(model, TerrainTallestPointCoords);
+    MainTreeModel = translate(MainTreeModel, TerrainTallestPointCoords);
+
 
     //Model for terrain
     mat4 TerrainModel = mat4(1.0f);
@@ -505,6 +511,7 @@ int main()
 
     //Scaling to zoom in
     model = scale(model, vec3(0.025f, 0.025f, 0.025f));
+    MainTreeModel = scale(MainTreeModel, vec3(0.00025f));
     
     glEnable(GL_DEPTH_TEST);
     //Render loop
@@ -542,9 +549,10 @@ int main()
             //Drawing models
             Shaders.use();
             //draw main tree at tallest point
-            mvp = projection * view * model;
+            mvp = projection * view * MainTreeModel;
             Shaders.setMat4("mvpIn", mvp);
-            Tree.Draw(Shaders);
+            CenterTree.Draw(Shaders);
+
 
             //Draw scattered trees
             for (int i = 0; i < NumberOfTrees; i++) {
