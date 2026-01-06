@@ -35,12 +35,13 @@ int windowHeight;
 //VAO vertex attribute positions in correspondence to vertex attribute type
 enum VAO_IDs { Triangles, Indices, Colours, Textures, NumVAOs = 2 };
 //VAOs
-GLuint VAOs[NumVAOs];
-
+GLuint TerrainVAOs[NumVAOs];
+GLuint ObjectVAOS[NumVAOs];
 //Buffer types
 enum Buffer_IDs { ArrayBuffer, NumBuffers = 4 };
 //Buffer objects
-GLuint Buffers[NumBuffers];
+GLuint TerrainBuffers[NumBuffers];
+GLuint ObjectBuffers[NumBuffers];
 
 //Shader program
 GLuint program;
@@ -96,12 +97,12 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 200;
+const int  NumberOfTrees = 1;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
 //list of rock model placement positions
-const int  NumberOfRocks = 350;
+const int  NumberOfRocks = 1;
 vec3 RocksPositions[NumberOfRocks];
 
 //int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500
@@ -110,6 +111,72 @@ vec3 RocksPositions[NumberOfRocks];
 //,3300, 3600, 4000, 4300, 4600,
 //4800, 4900, 5300, 5500, 5900,
 //6000,6400, 6500, 6900, 7200};
+
+float ObjectVertices[] = {
+    0.5f,0.5f,0.0f,
+    0.5f,-0.5f,0.0f,
+    -0.5f,-0.5f,0.0f,
+    -0.5f,0.5f,0.0f
+};
+unsigned int ObjectIndices[] = {
+    0,1,3,
+    1,2,3
+};
+mat4 ObjectTransform;
+unsigned int texture;
+
+
+static int SetUpObject() {
+    glGenVertexArrays(NumVAOs, ObjectVAOS);
+    glBindVertexArray(ObjectVAOS[0]);
+
+    glGenBuffers(NumBuffers, ObjectBuffers);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, ObjectBuffers[Triangles]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ObjectVertices), ObjectVertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ObjectBuffers[Indices]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ObjectIndices), ObjectIndices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    //Textures
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    //Unbinding
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    ObjectTransform = mat4(1.0f);
+    ObjectTransform = scale(ObjectTransform, vec3(0.5, 0.5, 0.5));
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+    //Selects x axis (S) of texture bound to GL_TEXTURE_2D & sets to repeat beyond normalised coordinates
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //Selects y axis (T) equivalently
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    //texture
+    int width, height, colourChannels;
+    //Retrieves texture data
+    unsigned char* data = stbi_load("media/woodPlanks.jpg", &width, &height, &colourChannels, 0);
+    if (data) //If retrieval successful
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else //If retrieval unsuccessful
+    {
+        cout << "Failed to load texture.\n";
+        return -1;
+    }
+    stbi_image_free(data);
+}
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -391,20 +458,20 @@ void SetUpTerrain() {
     }
 
     //Sets index of VAO
-    glGenVertexArrays(NumVAOs, VAOs);
+    glGenVertexArrays(NumVAOs, TerrainVAOs);
     //Binds VAO to a buffer
-    glBindVertexArray(VAOs[0]);
+    glBindVertexArray(TerrainVAOs[0]);
     //Sets indexes of all required buffer objects
-    glGenBuffers(NumBuffers, Buffers);
+    glGenBuffers(NumBuffers, TerrainBuffers);
 
     //Binds vertex object to array buffer
-    glBindBuffer(GL_ARRAY_BUFFER, Buffers[Triangles]);
+    glBindBuffer(GL_ARRAY_BUFFER, TerrainBuffers[Triangles]);
     //Allocates buffer memory for the vertices of the 'Triangles' buffer
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_SIZE * 6, terrainVertices, GL_STATIC_DRAW);
     //glBufferData(GL_ARRAY_BUFFER, sizeof(terrainVertices), terrainVertices, GL_STATIC_DRAW);
 
     //Binding & allocation for indices
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[Indices]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, TerrainBuffers[Indices]);
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(terrainIndices), terrainIndices, GL_STATIC_DRAW);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * trianglesGrid * 3, terrainIndices, GL_STATIC_DRAW);
@@ -473,7 +540,8 @@ int main()
     //Loading Of Models
     Model Rock("media/rock/Rock07-Base.obj");
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
-    Model CenterTree("media/CenterTree/MainTree.obj");
+// Only use centre tree when required, causes slow down
+  //  Model CenterTree("media/CenterTree/MainTree.obj");
     Shaders.use();
 
     //Sets the viewport size within the window to match the window size of 1280x720
@@ -508,10 +576,11 @@ int main()
     //Projection matrix
     mat4 projection = perspective(radians(45.0f), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
 
-
     //Scaling to zoom in
     model = scale(model, vec3(0.025f, 0.025f, 0.025f));
     MainTreeModel = scale(MainTreeModel, vec3(0.00025f));
+
+    SetUpObject();
     
     glEnable(GL_DEPTH_TEST);
     //Render loop
@@ -543,15 +612,25 @@ int main()
             TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
 
             //Render terrain
-            glBindVertexArray(VAOs[0]);
+            glBindVertexArray(TerrainVAOs[0]);
             glDrawElements(GL_TRIANGLES, trianglesGrid * 3, GL_UNSIGNED_INT, 0);
+
+            //Draw Object
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glBindVertexArray(ObjectVAOS[0]);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             //Drawing models
             Shaders.use();
             //draw main tree at tallest point
-            mvp = projection * view * MainTreeModel;
+            mvp = projection * view * model;
             Shaders.setMat4("mvpIn", mvp);
-            CenterTree.Draw(Shaders);
+            Tree.Draw(Shaders);
+
+            // Main tree (slows preformance)
+          //  mvp = projection * view * MainTreeModel;
+          //  Shaders.setMat4("mvpIn", mvp);
+          //  CenterTree.Draw(Shaders);
 
 
             //Draw scattered trees
