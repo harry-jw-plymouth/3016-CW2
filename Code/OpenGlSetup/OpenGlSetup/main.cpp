@@ -97,7 +97,7 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 1;
+const int  NumberOfTrees = 10;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
@@ -113,16 +113,16 @@ vec3 RocksPositions[NumberOfRocks];
 //6000,6400, 6500, 6900, 7200};
 
 float ObjectVertices[] = {
-    0.5f,0.5f,0.0f,
-    0.5f,-0.5f,0.0f,
-    -0.5f,-0.5f,0.0f,
-    -0.5f,0.5f,0.0f
+    0.5f,0.5f,0.0f   ,1.0f , 1.0f,
+    0.5f,-0.5f,0.0f,  1.0f, 0.0f,
+    -0.5f,-0.5f,0.0f  ,0.0f,0.0f,
+    -0.5f,0.5f,0.0f, 0.0f,1.0f
 };
 unsigned int ObjectIndices[] = {
     0,1,3,
     1,2,3
 };
-mat4 ObjectTransform;
+mat4 ObjectTransformModel;
 unsigned int texture;
 
 
@@ -150,8 +150,9 @@ static int SetUpObject() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    ObjectTransform = mat4(1.0f);
-    ObjectTransform = scale(ObjectTransform, vec3(0.5, 0.5, 0.5));
+    ObjectTransformModel = mat4(1.0f);
+    ObjectTransformModel = translate(ObjectTransformModel,vec3( 0.0,10, 0.0));
+    ObjectTransformModel = scale(ObjectTransformModel, vec3(0.5, 0.5, 0.5));
 
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D,texture);
@@ -488,7 +489,7 @@ void SetUpTerrain() {
     //Unbinding
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+   // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     //Get Coordinates for trees to place around
     SetPosForModels();
@@ -535,10 +536,11 @@ int main()
 
     //Loading of shaders
     Shader Shaders("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
+    Shader ObjectShader("shaders/ObjectVertexShader.vert", "shaders/ObjectFragmentShader.frag");
     Shader TerrainShader("shaders/TerrainVertexShader.vert", "shaders/TerrainFragmentShader.frag");
 
     //Loading Of Models
-    Model Rock("media/rock/Rock07-Base.obj");
+    Model Rock("media/rock/Rock07-Base.obj");;
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
 // Only use centre tree when required, causes slow down
   //  Model CenterTree("media/CenterTree/MainTree.obj");
@@ -553,10 +555,9 @@ int main()
     //Sets the mouse_callback() function as the callback for the mouse movement event
     glfwSetCursorPosCallback(window, Mouse_CallBack);
 
-    // progress
     SetUpTerrain();
 
-    //Model matrix
+    //Model matrices
     mat4 model = mat4(1.0f);
     mat4 ScatteredModel = mat4(1.0f);
     mat4 ScatteredRockModel = mat4(1.0f);
@@ -581,7 +582,8 @@ int main()
     MainTreeModel = scale(MainTreeModel, vec3(0.00025f));
 
     SetUpObject();
-    
+    mat4 mvp;
+    mat4 Objectmvp;
     glEnable(GL_DEPTH_TEST);
     //Render loop
     while (glfwWindowShouldClose(window) == false)
@@ -598,15 +600,15 @@ int main()
             UpdateNeeded = false;
 
             //Rendering
-            glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display on cleared window
-            glClear(GL_COLOR_BUFFER_BIT); //Clears the colour buffer
-            glClear(GL_DEPTH_BUFFER_BIT); //Might need
+            glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display 
+            glClear(GL_COLOR_BUFFER_BIT); 
+            glClear(GL_DEPTH_BUFFER_BIT); 
 
-            glEnable(GL_CULL_FACE); //Discards all back-facing triangles
+         //   glEnable(GL_CULL_FACE); //Discards all back-facing triangles
 
             //Transformations
             mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
-            mat4 mvp = projection * view * TerrainModel;
+            mvp = projection * view * TerrainModel;
 
             TerrainShader.use();
             TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
@@ -616,12 +618,22 @@ int main()
             glDrawElements(GL_TRIANGLES, trianglesGrid * 3, GL_UNSIGNED_INT, 0);
 
             //Draw Object
+            ObjectShader.use();
+            ObjectShader.setInt("textureIn", 0);
+            Objectmvp = projection * view * ObjectTransformModel;
+            ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
+
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
+
             glBindVertexArray(ObjectVAOS[0]);
+           // glBindTexture(GL_TEXTURE_2D, texture);
+            
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
 
             //Drawing models
-            Shaders.use();
+            
             //draw main tree at tallest point
             mvp = projection * view * model;
             Shaders.setMat4("mvpIn", mvp);
@@ -632,14 +644,14 @@ int main()
           //  Shaders.setMat4("mvpIn", mvp);
           //  CenterTree.Draw(Shaders);
 
-
+            Shaders.use();
             //Draw scattered trees
             for (int i = 0; i < NumberOfTrees; i++) {
                 mat4 ScatteredModel = mat4(1.0f);
                 ScatteredModel = translate(ScatteredModel, TreesPositions[i]);
                 ScatteredModel = scale(ScatteredModel, vec3(0.025f, 0.025f, 0.025f));
 
-                mat4 mvp = projection * view * ScatteredModel;
+                mvp = projection * view * ScatteredModel;
                 Shaders.setMat4("mvpIn", mvp);
 
                 Tree.Draw(Shaders);
@@ -650,7 +662,7 @@ int main()
                 mat4 ScatteredRockModel = mat4(1.0f);
                 ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
                 ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0005f, 0.0005f, 0.0005f));
-                mat4 mvp = projection * view * ScatteredRockModel;
+                mvp = projection * view * ScatteredRockModel;
                 Shaders.setMat4("mvpIn", mvp);
                 Rock.Draw(Shaders);
 
