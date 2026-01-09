@@ -112,16 +112,96 @@ vec3 RocksPositions[NumberOfRocks];
 //4800, 4900, 5300, 5500, 5900,
 //6000,6400, 6500, 6900, 7200};
 
+//float ObjectVertices[] = {
+ //   0.5f,0.5f,0.0f   ,1.0f , 1.0f,
+ //   0.5f,-0.5f,0.0f,  1.0f, 0.0f,
+ //   -0.5f,-0.5f,0.0f  ,0.0f,0.0f,
+ //   -0.5f,0.5f,0.0f, 0.0f,1.0f
+//};
+//unsigned int ObjectIndices[] = {
+//    0,1,3, //Front 1
+//    1,2,3 //Front 2
+//};
+
 float ObjectVertices[] = {
-    0.5f,0.5f,0.0f   ,1.0f , 1.0f,
-    0.5f,-0.5f,0.0f,  1.0f, 0.0f,
-    -0.5f,-0.5f,0.0f  ,0.0f,0.0f,
-    -0.5f,0.5f,0.0f, 0.0f,1.0f
+    // Left section
+    -1.0f,  1.0f, 0.0f,     0.0f, 1.0f,  //0 top left
+    -0.5f,  1.0f, 0.0f,     1.0f, 1.0f,  //1  top right  
+    -0.5f, -1.0f, 0.0f,     1.0f, 0.0f,  //2  bottom right
+    -1.0f, -1.0f, 0.0f,     0.0f, 0.0f,  //3   bottom left
+    
+    // Right section
+     0.5f,  1.0f, 0.0f,     0.0f, 1.0f,  //4
+    1.0f,  1.0f, 0.0f,  1.0f, 1.0f,      //5
+    1.0f, -1.0f, 0.0f,  1.0f, 0.0f,      //6
+    0.5f, -1.0f, 0.0f,  0.0f, 0.0f,      //7
+
+     // Middle section
+     -0.5f,  0.25f, 0.0f,     0.0f, 1.0f, //8
+     0.5f,  0.25f, 0.0f,  1.0f, 1.0f,     //9
+    0.5f, -0.25f, 0.0f,     1.0f, 0.0f,   //10
+     -0.5f, -0.25f, 0.0f,     0.0f, 0.0f,  //11
+
+     // Back
+    // Left section
+    -1.0f,  1.0f, 1.0f,     0.0f, 1.0f,   //12
+    -0.5f,  1.0f, 1.0f,     1.0f, 1.0f,   //13
+    -0.5f, -1.0f, 1.0f,     1.0f, 0.0f,   //14
+    -1.0f, -1.0f, 1.0f,     0.0f, 0.0f,   //15
+
+    // Right section
+     0.5f,  1.0f, 1.0f,     0.0f, 1.0f,   //16
+    1.0f,  1.0f, 1.0f,  1.0f, 1.0f,       //17
+    1.0f, -1.0f, 1.0f,  1.0f, 0.0f,      //18
+    0.5f, -1.0f, 1.0f,  0.0f, 0.0f,      //19
+
+    // Middle section
+    -0.5f,  0.25f, 1.0f,     0.0f, 1.0f,   //20
+    0.5f,  0.25f, 1.0f,  1.0f, 1.0f,       //21
+   0.5f, -0.25f, 1.0f,     1.0f, 0.0f,     //22
+    -0.5f, -0.25f, 1.0f,     0.0f, 0.0f,   //23
+
 };
 unsigned int ObjectIndices[] = {
-    0,1,3,
-    1,2,3
+    // Left section
+     0, 1, 2,  2, 3, 0,
+
+     // Right section
+      4, 5, 6,  6, 7, 4,
+
+      // Middle section
+       8, 9,10, 10,11, 8,
+
+      //Back
+    //left section
+    12,15,14, 14,13,12,
+    //Right Section
+    16,19,18, 18,17,16,
+    //Back section
+    20,23,22, 22,21,20,
+
+    //Sides
+    //Left Side
+      0,3,15, 15,12,0,  //left/outer
+     1,13,14, 14,2,1,   //right/inner
+     0,1,12, 12,13,1,  // top  
+     2,3,14,  14,15,3, //bottom
+     
+     
+     //Right Side
+     4,7,19, 19,16,4, //left/inner
+     5,17,18, 18,6,5, //right/outer
+     4,5,16, 16,17,5, //top 
+     6,7,18, 18, 19, 7, //bottom
+
+     //Middle Side
+     11,10,22, 22,23,11,//bottom 
+     8,20,21, 21,9,8 //top
+
+
 };
+const unsigned int totalIndexCount =sizeof(ObjectIndices) / sizeof(ObjectIndices[0]);
+
 mat4 ObjectTransformModel;
 unsigned int texture;
 
@@ -151,7 +231,7 @@ static int SetUpObject() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     ObjectTransformModel = mat4(1.0f);
-    ObjectTransformModel = translate(ObjectTransformModel,vec3( 0.0,10, 0.0));
+    ObjectTransformModel = translate(ObjectTransformModel,vec3( 0.0,5, 0.0));
     ObjectTransformModel = scale(ObjectTransformModel, vec3(0.5, 0.5, 0.5));
 
     glGenTextures(1, &texture);
@@ -629,7 +709,7 @@ int main()
             glBindVertexArray(ObjectVAOS[0]);
            // glBindTexture(GL_TEXTURE_2D, texture);
             
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, totalIndexCount, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             //Drawing models
