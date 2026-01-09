@@ -122,6 +122,34 @@ vec3 RocksPositions[NumberOfRocks];
 //    0,1,3, //Front 1
 //    1,2,3 //Front 2
 //};
+float SecondObjectVertices[] = {
+    //Front
+    //left outer section
+    -1.0f,1.0f,0.0f, 0.0f,1.0f, //0 top left
+    -0.75f,1.0f, 0.0f,  1.0f,1.0f //1 top right
+    - 0.25,0,1.0f,      1.0f, 0.0f,  //2 bottom right
+    -0.5f,-1.0f, 0.0f,   0.0f,0.0f  //3 bottom left
+
+    //left inner section
+     -0.25f,0.0f,0.0f, 0.0f,1.0f, //0 top left
+    -0.0f,0.25f, 0.0f,  1.0f,1.0f //1 top right
+    - 0.0f,-0,25.0f,      1.0f, 0.0f,  //2 bottom right
+    -0.5f,-1.0f, 0.0f,   0.0f,0.0f,  //3 bottom left
+
+    //Right Inner section
+    -0.0f,0.25f,0.0f, 0.0f,1.0f, //0 top left
+    0.25f,0.0f,0.0f,  1.0f,1.0f, //1 top right
+     0.5f,-1.0f,0.0f,      1.0f, 0.0f,  //2 bottom right
+     0.0f,-0.25f, 0.0f,   0.0f,0.0f,  //3 bottom left
+
+    //Right Outer section
+    0.75f,1.0f,0.0f, 0.0f,1.0f, //0 top left
+    1.0f,1.0f,0.0f,  1.0f,1.0f, //1 top right
+     0.5f,-1.0f,0.0f,    1.0f, 0.0f,  //2 bottom right
+     0.25f,0.0f, 0.0f,   0.0f,0.0f  //3 bottom left
+
+
+};
 
 float ObjectVertices[] = {
     // Left section
@@ -397,7 +425,6 @@ void SetPosForModels() {
 
 void SetUpTerrain() {
     //Biome noise
-
     FastNoiseLite TerrainNoise;
     TerrainNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
     TerrainNoise.SetFrequency(0.05f);
