@@ -37,11 +37,13 @@ enum VAO_IDs { Triangles, Indices, Colours, Textures, NumVAOs = 2 };
 //VAOs
 GLuint TerrainVAOs[NumVAOs];
 GLuint ObjectVAOS[NumVAOs];
+GLuint SecondObjectVAOs[NumVAOs];
 //Buffer types
 enum Buffer_IDs { ArrayBuffer, NumBuffers = 4 };
 //Buffer objects
 GLuint TerrainBuffers[NumBuffers];
 GLuint ObjectBuffers[NumBuffers];
+GLuint SecondObjectBuffers[NumBuffers];
 
 //Shader program
 GLuint program;
@@ -125,30 +127,36 @@ vec3 RocksPositions[NumberOfRocks];
 float SecondObjectVertices[] = {
     //Front
     //left outer section
-    -1.0f,1.0f,0.0f, 0.0f,1.0f, //0 top left
-    -0.75f,1.0f, 0.0f,  1.0f,1.0f //1 top right
-    - 0.25,0,1.0f,      1.0f, 0.0f,  //2 bottom right
-    -0.5f,-1.0f, 0.0f,   0.0f,0.0f  //3 bottom left
-
-    //left inner section
-     -0.25f,0.0f,0.0f, 0.0f,1.0f, //0 top left
-    -0.0f,0.25f, 0.0f,  1.0f,1.0f //1 top right
-    - 0.0f,-0,25.0f,      1.0f, 0.0f,  //2 bottom right
+    -1.0f,1.0f,0.0f,   0.0f,1.0f, //0 top left
+    -0.75f,1.0f, 0.0f,  1.0f,1.0f, //1 top right
+    - 0.25,0.0f,  0.0f,      1.0f, 0.0f,  //2 bottom right
     -0.5f,-1.0f, 0.0f,   0.0f,0.0f,  //3 bottom left
 
+    //left inner section
+     -0.25f,0.0f,0.0f, 0.0f,1.0f, //4 top left
+    -0.0f,0.25f, 0.0f,  1.0f,1.0f, //5 top right
+    - 0.0f,-0.25f,0.0f,      1.0f, 0.0f,  //6 bottom right
+    -0.5f,-1.0f, 0.0f,   0.0f,0.0f,  //7 bottom left
+
     //Right Inner section
-    -0.0f,0.25f,0.0f, 0.0f,1.0f, //0 top left
-    0.25f,0.0f,0.0f,  1.0f,1.0f, //1 top right
-     0.5f,-1.0f,0.0f,      1.0f, 0.0f,  //2 bottom right
-     0.0f,-0.25f, 0.0f,   0.0f,0.0f,  //3 bottom left
+    0.0f,0.25f,0.0f,  0.0f,1.0f, //8 top left
+    0.25f,0.0f, 0.0f,  1.0f,1.0f, //9 top right
+     0.5f,-1.0f, 0.0f,      1.0f, 0.0f,  //10 bottom right
+     0.0f,-0.25f,  0.0f,   0.0f,0.0f,  //11 bottom left
 
     //Right Outer section
-    0.75f,1.0f,0.0f, 0.0f,1.0f, //0 top left
-    1.0f,1.0f,0.0f,  1.0f,1.0f, //1 top right
-     0.5f,-1.0f,0.0f,    1.0f, 0.0f,  //2 bottom right
-     0.25f,0.0f, 0.0f,   0.0f,0.0f  //3 bottom left
+    0.75f,1.0f, 0.0f, 0.0f,1.0f, //12 top left
+    1.0f,1.0f, 0.0f,  1.0f,1.0f, //13 top right
+     0.5f,-1.0f,0.0f,    1.0f, 0.0f,  //14 bottom right
+     0.25f,0.0f, 0.0f,   0.0f,0.0f  //15 bottom left
 
 
+};
+unsigned int SecondObjectIndices[] = {
+    0,1,2  , 0,2,3,  //left outer section 
+    4,7,6 ,  4,5,6,  // left inner section 
+    8,11,9,  11,14,9,  // right inner section
+    9,10,13,  9,12,13  //Right Outer section
 };
 
 float ObjectVertices[] = {
@@ -229,12 +237,15 @@ unsigned int ObjectIndices[] = {
 
 };
 const unsigned int totalIndexCount =sizeof(ObjectIndices) / sizeof(ObjectIndices[0]);
+const unsigned int totalIndexCountForSecondObject = sizeof(SecondObjectIndices) / sizeof(SecondObjectIndices[0]);
 
 mat4 ObjectTransformModel;
+mat4 SecondObjectTransformModel;
 unsigned int texture;
 
 
 static int SetUpObject() {
+    //First object
     glGenVertexArrays(NumVAOs, ObjectVAOS);
     glBindVertexArray(ObjectVAOS[0]);
 
@@ -259,7 +270,7 @@ static int SetUpObject() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     ObjectTransformModel = mat4(1.0f);
-    ObjectTransformModel = translate(ObjectTransformModel,vec3( 0.0,5, 0.0));
+    ObjectTransformModel = translate(ObjectTransformModel,vec3( 1.0,5, 0.0));
     ObjectTransformModel = scale(ObjectTransformModel, vec3(0.5, 0.5, 0.5));
 
     glGenTextures(1, &texture);
@@ -269,8 +280,47 @@ static int SetUpObject() {
     //Selects y axis (T) equivalently
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+
+
+    //Second object
+    glGenVertexArrays(NumVAOs, SecondObjectVAOs);
+    glBindVertexArray(SecondObjectVAOs[0]);
+
+    glGenBuffers(NumBuffers, SecondObjectBuffers);
+
+    glBindBuffer(GL_ARRAY_BUFFER, SecondObjectBuffers[Triangles]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(SecondObjectVertices), SecondObjectVertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, SecondObjectBuffers[Indices]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(SecondObjectIndices), SecondObjectIndices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    //Textures
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    //Unbinding
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    SecondObjectTransformModel = mat4(1.0f);
+    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(0.0, 5, 0.0));
+    SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.5, 0.5, 0.5));
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    //Selects x axis (S) of texture bound to GL_TEXTURE_2D & sets to repeat beyond normalised coordinates
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //Selects y axis (T) equivalently
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+
     //texture
     int width, height, colourChannels;
+    //Retrieves texture data
     //Retrieves texture data
     unsigned char* data = stbi_load("media/woodPlanks.jpg", &width, &height, &colourChannels, 0);
     if (data) //If retrieval successful
@@ -737,6 +787,20 @@ int main()
            // glBindTexture(GL_TEXTURE_2D, texture);
             
             glDrawElements(GL_TRIANGLES, totalIndexCount, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+
+
+            //Draw Second object
+            Objectmvp = projection * view * SecondObjectTransformModel;
+            ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture);
+
+            glBindVertexArray(SecondObjectVAOs[0]);
+            // glBindTexture(GL_TEXTURE_2D, texture);
+
+            glDrawElements(GL_TRIANGLES, totalIndexCountForSecondObject, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             //Drawing models
