@@ -116,7 +116,7 @@ vec3 RocksPositions[NumberOfRocks];
  //   0.5f,0.5f,0.0f   ,1.0f , 1.0f,
  //   0.5f,-0.5f,0.0f,  1.0f, 0.0f,
  //   -0.5f,-0.5f,0.0f  ,0.0f,0.0f,
- //   -0.5f,0.5f,0.0f, 0.0f,1.0f
+ //   -0.5f,0.5f,0.0f, 0.0f,1.0fw
 //};
 //unsigned int ObjectIndices[] = {
 //    0,1,3, //Front 1

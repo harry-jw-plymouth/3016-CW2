@@ -72,8 +72,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\OpenGlSetup\Libraries\OpenGL\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Source\assimp\include;C:\Users\Public\Assimp\Binaries\include;C:\Users\Public\Assimp\Binaries\lib\Release;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Public\OpenGL\lib;C:\Users\Public\Assimp\Source\assimp\include;C:\Users\Public\Assimp\Binaries\include;C:\Users\Public\Assimp\Binaries\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\OpenGlSetup\Libraries\OpenGL\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\lib\Release;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\OpenGlSetup\Libraries\OpenGL\lib;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
