@@ -1,0 +1,10 @@
+^C:\USERS\PUBLIC\ASSIMP\BINARIES\CMAKEFILES\BBB730EA46353241412C8D4EC65AB568\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Public/Assimp/Source/assimp -BC:/Users/Public/Assimp/Binaries --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Public/Assimp/Binaries/Assimp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
