@@ -1,22 +1,22 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(538,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGlSetup.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   main.cpp
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(437,52): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(437,52): warning C4244:         with
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(437,52): warning C4244:         [
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(437,52): warning C4244:             T=float
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(437,52): warning C4244:         ]
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(510,62): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(510,62): warning C4244:         with
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(510,62): warning C4244:         [
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(510,62): warning C4244:             T=float
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(510,62): warning C4244:         ]
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(477,9): warning C4101: 'IndexTemp': unreferenced local variable
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(475,9): warning C4101: 'Variance': unreferenced local variable
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(543,11): error C2374: 'centerY': redefinition; multiple initialization
-      C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(532,51):
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(448,52): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(448,52): warning C4244:         with
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(448,52): warning C4244:         [
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(448,52): warning C4244:             T=float
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(448,52): warning C4244:         ]
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(513,62): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(513,62): warning C4244:         with
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(513,62): warning C4244:         [
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(513,62): warning C4244:             T=float
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(513,62): warning C4244:         ]
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(487,9): warning C4101: 'IndexTemp': unreferenced local variable
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(485,9): warning C4101: 'Variance': unreferenced local variable
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(577,11): error C2374: 'centerY': redefinition; multiple initialization
+      C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(535,51):
       see declaration of 'centerY'
   
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(543,11): error C2086: 'float centerY': redefinition
-      C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(532,51):
+C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(577,11): error C2086: 'float centerY': redefinition
+      C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(535,51):
       see declaration of 'centerY'
   
