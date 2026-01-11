@@ -148,15 +148,58 @@ float SecondObjectVertices[] = {
     0.75f,1.0f, 0.0f, 0.0f,1.0f, //12 top left
     1.0f,1.0f, 0.0f,  1.0f,1.0f, //13 top right
      0.5f,-1.0f,0.0f,    1.0f, 0.0f,  //14 bottom right
-     0.25f,0.0f, 0.0f,   0.0f,0.0f  //15 bottom left
+     0.25f,0.0f, 0.0f,   0.0f,0.0f,  //15 bottom left
+     //back
+    //left outer section
+    -1.0f,1.0f,1.0f,   0.0f,1.0f, //16 top left
+    -0.75f,1.0f, 1.0f,  1.0f,1.0f, //17 top right
+    -0.25,0.0f,  1.0f,      1.0f, 0.0f,  //18 bottom right
+    -0.5f,-1.0f, 1.0f,   0.0f,0.0f,  //19 bottom left
+
+    //left inner section
+     -0.25f,0.0f,1.0f, 0.0f,1.0f, //20 top left
+    -0.0f,0.25f, 1.0f,  1.0f,1.0f, //21 top right
+    -0.0f,-0.25f,1.0f,      1.0f, 0.0f,  //22 bottom right
+    -0.5f,-1.0f, 1.0f,   0.0f,0.0f,  //23 bottom left
+
+    //Right Inner section
+    0.0f,0.25f,1.0f,  0.0f,1.0f, //24 top left
+    0.25f,0.0f, 1.0f,  1.0f,1.0f, //25 top right
+     0.5f,-1.0f, 1.0f,      1.0f, 0.0f,  //26 bottom right
+     0.0f,-0.25f, 1.0f,   0.0f,0.0f,  //27 bottom left
+
+     //Right Outer section
+     0.75f,1.0f, 1.0f, 0.0f,1.0f, //28 top left
+     1.0f,1.0f, 1.0f,  1.0f,1.0f, //29 top right
+      0.5f,-1.0f,1.0f,    1.0f, 0.0f,  //30 bottom right
+      0.25f,0.0f, 1.0f,   0.0f,0.0f,  //31 bottom left
 
 
 };
 unsigned int SecondObjectIndices[] = {
+    //front
     0,1,2  , 0,2,3,  //left outer section 
     4,7,6 ,  4,5,6,  // left inner section 
     8,11,9,  11,14,9,  // right inner section
-    9,10,13,  9,12,13  //Right Outer section
+    9,10,13,  9,12,13,  //Right Outer section
+    //back
+    16,17,18  , 16,18,19,  //left outer section 
+    20,23,22 ,  20,21,22,  // left inner section 
+    24,27,25,  27,30,25,  // right inner section
+    25,26,29,  25,28,29,  //Right Outer section
+    //sides
+     0,1,16,  1,16,17,  //top left
+     12,13,28,  13,28,29,//top right
+     0,3,16,  16,19,3,//left outer side
+     1,4, 17,   17,18,4,   //left inner side
+     4,5,20,  20,21,5,// left center top
+     8,9,24,   24,25,9,//right center top
+     9,12, 31,   28,31,12 ,  //right inner side
+     13,10,29,   29,30, 10,//right outer side
+     10,11,30,  11,26,27,//Bottom right
+     7,6,22,  22,23,7 //bottom left
+    
+
 };
 
 float ObjectVertices[] = {
@@ -307,7 +350,7 @@ static int SetUpObject() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     SecondObjectTransformModel = mat4(1.0f);
-    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(0.0, 5, 0.0));
+    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.25, 5, 0.0));
     SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.5, 0.5, 0.5));
 
     glGenTextures(1, &texture);
