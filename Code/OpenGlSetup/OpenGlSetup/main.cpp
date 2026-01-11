@@ -76,7 +76,8 @@ float lastFrame = 0.0f;
 //Start Pos for terrain (both x and y)
 float drawingStartPosition = 4.0f;
 
-float Tile_Size = 0.0625f;
+//Size of each section connected by vertices
+float TileSize = 0.0625f;
 
 #define RENDER_DISTANCE 256 //Render width of map
 #define MAP_SIZE RENDER_DISTANCE * RENDER_DISTANCE //Size of map in x & z space
@@ -103,27 +104,11 @@ const int  NumberOfTrees = 10;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
-//list of rock model placement positions
+//list of scattered rock model placement positions
 const int  NumberOfRocks = 1;
 vec3 RocksPositions[NumberOfRocks];
 
-//int IndexesToPlaceTrees[NumberOfTrees] = { 1,200,300,400,500
-//,600,700,800,900,10,
-//100,1500,1800, 2300,2800
-//,3300, 3600, 4000, 4300, 4600,
-//4800, 4900, 5300, 5500, 5900,
-//6000,6400, 6500, 6900, 7200};
-
-//float ObjectVertices[] = {
- //   0.5f,0.5f,0.0f   ,1.0f , 1.0f,
- //   0.5f,-0.5f,0.0f,  1.0f, 0.0f,
- //   -0.5f,-0.5f,0.0f  ,0.0f,0.0f,
- //   -0.5f,0.5f,0.0f, 0.0f,1.0fw
-//};
-//unsigned int ObjectIndices[] = {
-//    0,1,3, //Front 1
-//    1,2,3 //Front 2
-//};
+//W shaped object vertices
 float SecondObjectVertices[] = {
     //Front
     //left outer section
@@ -176,6 +161,7 @@ float SecondObjectVertices[] = {
 
 
 };
+//W shaped object indices
 unsigned int SecondObjectIndices[] = {
     //front
     0,1,2  , 0,2,3,  //left outer section 
@@ -202,8 +188,9 @@ unsigned int SecondObjectIndices[] = {
 
 };
 
+//H Shaped object vertices
 float ObjectVertices[] = {
-    // Left section
+    // Left section                        Indexes and positions in corresponding sqaure
     -1.0f,  1.0f, 0.0f,     0.0f, 1.0f,  //0 top left
     -0.5f,  1.0f, 0.0f,     1.0f, 1.0f,  //1  top right  
     -0.5f, -1.0f, 0.0f,     1.0f, 0.0f,  //2  bottom right
@@ -240,26 +227,23 @@ float ObjectVertices[] = {
    0.5f, -0.25f, 1.0f,     1.0f, 0.0f,     //22
     -0.5f, -0.25f, 1.0f,     0.0f, 0.0f,   //23
 
-};
+}; 
+//H Shaped object indices
 unsigned int ObjectIndices[] = {
     // Left section
      0, 1, 2,  2, 3, 0,
-
      // Right section
       4, 5, 6,  6, 7, 4,
-
       // Middle section
        8, 9,10, 10,11, 8,
-
       //Back
-    //left section
-    12,15,14, 14,13,12,
+        //left section
+     12,15,14, 14,13,12,
     //Right Section
     16,19,18, 18,17,16,
     //Back section
     20,23,22, 22,21,20,
-
-    //Sides
+   //Sides
     //Left Side
       0,3,15, 15,12,0,  //left/outer
      1,13,14, 14,2,1,   //right/inner
@@ -276,12 +260,13 @@ unsigned int ObjectIndices[] = {
      //Middle Side
      11,10,22, 22,23,11,//bottom 
      8,20,21, 21,9,8 //top
+}; 
 
-
-};
+//
 const unsigned int totalIndexCount =sizeof(ObjectIndices) / sizeof(ObjectIndices[0]);
 const unsigned int totalIndexCountForSecondObject = sizeof(SecondObjectIndices) / sizeof(SecondObjectIndices[0]);
 
+// mat4 for H and W object shapes 
 mat4 ObjectTransformModel;
 mat4 SecondObjectTransformModel;
 unsigned int texture;
@@ -379,12 +364,13 @@ static int SetUpObject() {
     stbi_image_free(data);
 }
 
-
+//Pulled directly from labs
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     //Resizes window based on contemporary width & height values
     glViewport(0, 0, width, height);
 }
+//Pulled directly from labs
 void Mouse_CallBack(GLFWwindow* window, double xpos, double ypos) {
     //Initially no last positions, so sets last positions to current positions
     if (mouseFirstEntry)
@@ -433,9 +419,12 @@ void Mouse_CallBack(GLFWwindow* window, double xpos, double ypos) {
     cameraFront = normalize(direction);
 }
 float GetHeightOfTerrainAtCurrentPos() {
-    int CurrentX = (int)((drawingStartPosition - cameraPosition.x) / Tile_Size);
-    int CurrentZ = (int)((drawingStartPosition - cameraPosition.z) / Tile_Size);
+    //return height of terrain at cameras current position
+    // Used to ensure user does not go under terrain
+    int CurrentX = (int)((drawingStartPosition - cameraPosition.x) / TileSize);
+    int CurrentZ = (int)((drawingStartPosition - cameraPosition.z) / TileSize);
     
+    //Check camera is within bounds of terrain, otherwise crash will occur
     if (CurrentX < 0 || CurrentX >= RENDER_DISTANCE || CurrentZ >= RENDER_DISTANCE || CurrentZ < 0) {
         return 0;
     }
@@ -448,6 +437,7 @@ void CheckForCollision() {
         cameraPosition.y = CurrentPosTerrainHeight + 0.25;
     }
 }
+//Pulled directly from labs, but with addition of call for collision check function
 void ProcessUserInput(GLFWwindow* WindowIn) {
     if (glfwGetKey(WindowIn, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -476,8 +466,8 @@ void ProcessUserInput(GLFWwindow* WindowIn) {
         cameraPosition += normalize(cross(cameraFront, cameraUp)) * movementSpeed;
         UpdateNeeded = true;
     }
+    //Function called to ensure camera doesnt go beneath terrain
     CheckForCollision();
-
    // cout << "camers pos: " << cameraPosition.x << ", " << cameraPosition.y << cameraPosition.z << "\n";
 }
 void SetPosForModels() {
@@ -485,23 +475,29 @@ void SetPosForModels() {
     int Variance;
     int FinalIndex = 0;
     int IndexTemp;
+    // loop through every tree to be drawn on terrain
     for (int i = 0; i <NumberOfTrees ; i++) {
-        //get index with variance
+         // indexes dynamically set based on number of trees required/declared earlier in code
+        // indexes chosen are equally spaced apart initially
+        // essentially i multiplied The Number of vertices in the terrain divided by the number of trees
+        // Variance is then added to the index to ensure trees are added in a semi realistic pattern
+        // variance is random, but limited so trees are still spread apart properly
          FinalIndex = (i* (HighestIndex / NumberOfTrees)) + rand() %  (HighestIndex / NumberOfTrees);
          
-         //Check Variance doesnt make the index too high
+         //Check Variance doesnt make the index higher than the length of the array it is indexing
          if (HighestIndex - 1 < FinalIndex) {
              FinalIndex = HighestIndex;
          }   
 
+         //set tree model position to the poistion stored at the vertices of the index
         TreesPositions[i].x = terrainVertices[FinalIndex][0];
         TreesPositions[i].y = terrainVertices[FinalIndex][1];
         TreesPositions[i].z = terrainVertices[FinalIndex][2];
-        Current += HighestIndex / NumberOfTrees;
     }
-     Current = 0;
+     //loop through every rock to be drawn on the terrain
      for (int i = 0; i < NumberOfRocks; i++) {
          //get index with variance
+         // same method as trees
           FinalIndex = (i * (HighestIndex / NumberOfRocks)) + rand() % (HighestIndex / NumberOfRocks);
 
          //Check Variance doesnt make the index too high
@@ -509,13 +505,13 @@ void SetPosForModels() {
              FinalIndex = HighestIndex;
          }
 
+         //set rock position to position of position of indexed vertices
          RocksPositions[i].x = terrainVertices[FinalIndex][0];
          RocksPositions[i].y = terrainVertices[FinalIndex][1]+0.01;
          RocksPositions[i].z = terrainVertices[FinalIndex][2];
-         Current += HighestIndex / NumberOfTrees;
      }
 }
-
+//mostly taken from labs but with some adjustments 
 void SetUpTerrain() {
     //Biome noise
     FastNoiseLite TerrainNoise;
@@ -539,43 +535,15 @@ void SetUpTerrain() {
     float columnVerticesOffset = drawingStartPosition;
     float rowVerticesOffset = drawingStartPosition;
 
-    int rowIndex = 0;
-    for (int i = 0; i < MAP_SIZE; i++)
-    {
-        //Generation of x & z vertices for horizontal plane
-        terrainVertices[i][0] = columnVerticesOffset;
-        terrainVertices[i][2] = rowVerticesOffset;
-
-        //Green colour 
-        terrainVertices[i][3] = 9.0f;
-        terrainVertices[i][4] = 121.75f;
-        terrainVertices[i][5] = 105.25f;
-
-        //Shifts x position across for next triangle along grid
-        columnVerticesOffset = columnVerticesOffset + -Tile_Size;
-
-        //Indexing of each chunk within row
-        rowIndex++;
-        //True when all triangles of the current row have been generated
-        if (rowIndex == RENDER_DISTANCE)
-        {
-            //Resets for next row of triangles
-            rowIndex = 0;
-            //Resets x position for next row of triangles
-            columnVerticesOffset = drawingStartPosition;
-            //Shifts z position
-            rowVerticesOffset = rowVerticesOffset + -Tile_Size;
-        }
-    }
-    //Terrain vertice index
-    int i = 0;
-
     //Highest point of terrain updated in loop
     float TallestTerrainPos = -200;
     int TallestPosIndex = 0;
     //Center 
     float centerPos = RENDER_DISTANCE * 0.5f;
     float centerY = RENDER_DISTANCE * 0.5f;
+    
+    //Terrain vertice index
+    int i = 0;
     //Using x & y nested for loop in order to apply noise 2-dimensionally
     for (int y = 0; y < RENDER_DISTANCE; y++)
     {
@@ -613,6 +581,33 @@ void SetUpTerrain() {
                 TallestPosIndex = i;
             }
             i++;
+        }
+    }
+
+    int rowIndex = 0;
+    for (int i = 0; i < MAP_SIZE; i++)
+    {
+        //Generation of x & z vertices for horizontal plane
+        terrainVertices[i][0] = columnVerticesOffset;
+        terrainVertices[i][2] = rowVerticesOffset;
+
+        //Green colour 
+  
+
+        //Shifts x position across for next triangle along grid
+        columnVerticesOffset = columnVerticesOffset + -TileSize;
+
+        //Indexing of each chunk within row
+        rowIndex++;
+        //True when all triangles of the current row have been generated
+        if (rowIndex == RENDER_DISTANCE)
+        {
+            //Resets for next row of triangles
+            rowIndex = 0;
+            //Resets x position for next row of triangles
+            columnVerticesOffset = drawingStartPosition;
+            //Shifts z position
+            rowVerticesOffset = rowVerticesOffset + -TileSize;
         }
     }
 
