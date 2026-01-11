@@ -526,6 +526,7 @@ void SetUpTerrain() {
 
     //Biome noise
     FastNoiseLite BiomeNoise;
+
     BiomeNoise.SetNoiseType(FastNoiseLite::NoiseType_Cellular);
     BiomeNoise.SetFrequency(0.05f);
     int biomeSeed = rand() % 100;
@@ -535,7 +536,6 @@ void SetUpTerrain() {
     float centerX = RENDER_DISTANCE * 0.5f; float centerY = RENDER_DISTANCE * 0.5f;
 
     //Positions to start drawing from (centered around origin)
-    
     float columnVerticesOffset = drawingStartPosition;
     float rowVerticesOffset = drawingStartPosition;
 
@@ -544,10 +544,9 @@ void SetUpTerrain() {
     {
         //Generation of x & z vertices for horizontal plane
         terrainVertices[i][0] = columnVerticesOffset;
-      //  terrainVertices[i][1] = 0.0f;
         terrainVertices[i][2] = rowVerticesOffset;
 
-        //Colour
+        //Green colour 
         terrainVertices[i][3] = 9.0f;
         terrainVertices[i][4] = 121.75f;
         terrainVertices[i][5] = 105.25f;
@@ -574,19 +573,19 @@ void SetUpTerrain() {
     //Highest point of terrain updated in loop
     float TallestTerrainPos = -200;
     int TallestPosIndex = 0;
+    //Center 
+    float centerPos = RENDER_DISTANCE * 0.5f;
+    float centerY = RENDER_DISTANCE * 0.5f;
     //Using x & y nested for loop in order to apply noise 2-dimensionally
     for (int y = 0; y < RENDER_DISTANCE; y++)
     {
         for (int x = 0; x < RENDER_DISTANCE; x++)
         {
             //Setting of height from 2D noise value at respective x & y coordinate
-            //terrainVertices[i][1] = TerrainNoise.GetNoise((float)x, (float)y);
-            float centerX = RENDER_DISTANCE * 0.5f;
-            float centerY = RENDER_DISTANCE * 0.5f;
-            float dx = x - centerX;
-            float dy = y - centerY; 
-            float dist = sqrt(dx * dx + dy * dy);
-            float maxDist = sqrt(centerX * centerX + centerY * centerY);
+            float XOffset = x - centerPos;
+            float YOffset = y - centerPos; 
+            float dist = sqrt(XOffset * XOffset + YOffset * YOffset);
+            float maxDist = sqrt(centerPos * centerPos + centerY * centerY);
             float falloff = 1.0f - (dist / maxDist); falloff = std::max(falloff, 0.0f); 
             float noise = TerrainNoise.GetNoise((float)x, (float)y); 
             terrainVertices[i][1] = falloff * 5.0f + noise * 0.5f;
@@ -595,40 +594,39 @@ void SetUpTerrain() {
 
             if (biomeValue <= -0.75f) //Plains
             {
+                //set biome to green colour
                 terrainVertices[i][3] = 0.45f;
                 terrainVertices[i][4] = 0.75f;
                 terrainVertices[i][5] = 0.35f;
             }
             else //Deeper forest
             {
+                //set biome to darker green colour
                 terrainVertices[i][3] = 0.10f;
                 terrainVertices[i][4] = 0.45f;
                 terrainVertices[i][5] = 0.20f;
             }
             //check to see if new height is taller than current tallest
+            // used ton detemine where to place central objects 
             if (terrainVertices[i][1] > TallestTerrainPos) {
                 TallestTerrainPos = terrainVertices[i][1];
                 TallestPosIndex = i;
             }
-
             i++;
-
-
- 
         }
-
     }
+
+    //Set tallest coordinates to cooridnates of vertice of highest index 
     HighestIndex = i;
     TerrainTallestPointCoords.x = terrainVertices[TallestPosIndex][0];
     TerrainTallestPointCoords.y = terrainVertices[TallestPosIndex][1];
     TerrainTallestPointCoords.z = terrainVertices[TallestPosIndex][2];
-    
 
     //Positions to start mapping indices from
     int columnIndicesOffset = 0;
     int rowIndicesOffset = 0;
 
-    //Generation of map indices in the form of chunks (1x1 right angle triangle squares)
+    //Loop for setting terrain Indices
     rowIndex = 0;
     for (int i = 0; i < trianglesGrid - 1; i += 2)
     {
@@ -667,13 +665,11 @@ void SetUpTerrain() {
 
     //Binds vertex object to array buffer
     glBindBuffer(GL_ARRAY_BUFFER, TerrainBuffers[Triangles]);
-    //Allocates buffer memory for the vertices of the 'Triangles' buffer
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_SIZE * 6, terrainVertices, GL_STATIC_DRAW);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(terrainVertices), terrainVertices, GL_STATIC_DRAW);
 
     //Binding & allocation for indices
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, TerrainBuffers[Indices]);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(terrainIndices), terrainIndices, GL_STATIC_DRAW);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * trianglesGrid * 3, terrainIndices, GL_STATIC_DRAW);
 
@@ -689,18 +685,9 @@ void SetUpTerrain() {
     //Unbinding
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-   // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    //Get Coordinates for trees to place around
+    //Get Coordinates for trees and other repeated objects to place around
     SetPosForModels();
-
-
-}
-void DrawTrees() {
-
-}
-void DrawRocks() {
-
 }
 int main()
 {
