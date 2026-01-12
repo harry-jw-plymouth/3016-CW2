@@ -686,10 +686,10 @@ void SetUpTerrain() {
 }
 int main()
 {
-
     //Initialisation of GLFW
     glfwInit();
 
+    //Sizes for window
     windowWidth = 1280;
     windowHeight = 720;
 
@@ -763,10 +763,14 @@ int main()
     model = scale(model, vec3(0.025f, 0.025f, 0.025f));
     MainTreeModel = scale(MainTreeModel, vec3(0.00025f));
 
+    //Function sets up vertices and indices for the H and W objects 
     SetUpObject();
+
+    //mvps to pass to shaders
     mat4 mvp;
     mat4 Objectmvp;
     glEnable(GL_DEPTH_TEST);
+
     //Render loop
     while (glfwWindowShouldClose(window) == false)
     {
@@ -778,6 +782,8 @@ int main()
         //Input
         ProcessUserInput(window);
 
+        //Check if update needed
+        //Only updates if necessary(e.g on user input)
         if (UpdateNeeded) {
             UpdateNeeded = false;
 
@@ -786,12 +792,11 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT);
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            //   glEnable(GL_CULL_FACE); //Discards all back-facing triangles
-
-               //Transformations
+            //Transformations
             mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
             mvp = projection * view * TerrainModel;
 
+            //Set shader for terrain
             TerrainShader.use();
             TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
 
@@ -799,7 +804,7 @@ int main()
             glBindVertexArray(TerrainVAOs[0]);
             glDrawElements(GL_TRIANGLES, TrianglesGrid * 3, GL_UNSIGNED_INT, 0);
 
-            //Draw Object
+            //Draw H Object
             ObjectShader.use();
             ObjectShader.setInt("textureIn", 0);
             Objectmvp = projection * view * ObjectTransformModel;
@@ -815,7 +820,7 @@ int main()
             glBindVertexArray(0);
 
 
-            //Draw Second object
+            //Draw W Second object
             Objectmvp = projection * view * SecondObjectTransformModel;
             ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
 
@@ -823,7 +828,6 @@ int main()
             glBindTexture(GL_TEXTURE_2D, texture);
 
             glBindVertexArray(SecondObjectVAOs[0]);
-            // glBindTexture(GL_TEXTURE_2D, texture);
 
             glDrawElements(GL_TRIANGLES, totalIndexCountForSecondObject, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
