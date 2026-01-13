@@ -732,6 +732,7 @@ int main()
 
     //Loading Of Models
     Model Rock("media/rock/Rock07-Base.obj");;
+    Model Butterfly("media/Bird/_butterfly.obj");
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
     // Only use centre tree when required, causes slow down
       //  Model CenterTree("media/CenterTree/MainTree.obj");
@@ -753,6 +754,7 @@ int main()
     mat4 ScatteredModel = mat4(1.0f);
     mat4 ScatteredRockModel = mat4(1.0f);
     mat4 MainTreeModel = mat4(1.0f);
+    mat4 ButterflyModel = mat4(1.0f);
 
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
@@ -760,6 +762,10 @@ int main()
     //Elevation to look upon terrain
     model = translate(model, TerrainTallestPointCoords);
     MainTreeModel = translate(MainTreeModel, TerrainTallestPointCoords);
+
+    //Set Bird to start position
+    ButterflyModel = translate(ButterflyModel, vec3(0.0f, 5.0f, 0.0f));
+    ButterflyModel = scale(ButterflyModel, vec3(0.0025, 0.0025, 0.0025));
 
 
     //Model for terrain
@@ -842,6 +848,10 @@ int main()
             glBindVertexArray(0);
 
             //Drawing models
+            //Draw Bird
+            mvp = projection * view * ButterflyModel;
+            Shaders.setMat4("mvpIn", mvp);
+            Butterfly.Draw(Shaders);
 
             //draw main tree at tallest point
             mvp = projection * view * model;
