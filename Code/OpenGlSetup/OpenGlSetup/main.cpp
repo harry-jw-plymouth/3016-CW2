@@ -100,12 +100,12 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 10;
+const int  NumberOfTrees = 150;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
 //list of scattered rock model placement positions
-const int  NumberOfRocks = 1;
+const int  NumberOfRocks = 200;
 vec3 RocksPositions[NumberOfRocks];
 
 //W shaped object vertices
@@ -297,9 +297,15 @@ static int SetUpObject() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+    //postioned to map center
     ObjectTransformModel = mat4(1.0f);
-    ObjectTransformModel = translate(ObjectTransformModel, vec3(1.0, 5, 0.0));
-    ObjectTransformModel = scale(ObjectTransformModel, vec3(0.5, 0.5, 0.5));
+    //   SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.25, 5, 0.0));
+    ObjectTransformModel = translate(ObjectTransformModel, TerrainTallestPointCoords);
+    ObjectTransformModel = translate(ObjectTransformModel, vec3(-0.7, 0.10, 0.7));
+    //  SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.5, 0.5, 0.5));
+    ObjectTransformModel = rotate(ObjectTransformModel, radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
+    ObjectTransformModel = scale(ObjectTransformModel, vec3(0.2, 0.2, 0.2));
+
 
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -334,9 +340,12 @@ static int SetUpObject() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+    //Postion model to center of map
     SecondObjectTransformModel = mat4(1.0f);
-    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.25, 5, 0.0));
-    SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.5, 0.5, 0.5));
+    SecondObjectTransformModel = translate(SecondObjectTransformModel, TerrainTallestPointCoords);
+    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.3, 0.10, 0.3));
+    SecondObjectTransformModel = rotate(SecondObjectTransformModel, radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
+    SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.2, 0.2, 0.2));
 
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
