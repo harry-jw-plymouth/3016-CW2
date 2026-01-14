@@ -1,4 +1,4 @@
-<img width="1246" height="374" alt="image" src="https://github.com/user-attachments/assets/de91e75e-5c94-49d7-b6c2-9e0bec885a13" /># 3016-CW2
+# 3016-CW2
 
 # Video Link 
 # Gameplay description 
@@ -64,6 +64,19 @@ GLad initialisation:
 Texture asset loading:
 ![texture initialisation](MDImages/TextureInit.png) 
 
+# Extra things of note 
+## Signature
+Placed within the scenel,there are 2 objects,one being a H and one being a W. These act as a signature for myself, being my initials, for more details on these objects, please see the set up section below
+![Initials objects](MDImages/Initials.png) 
+## Setting up objects 
+As mentioned in the above signature section, within the scene there are 2 objects, one being a H and one being a W. Unlile the trees and other objects seen around the scene, these were created by hard coding their vertices and indices in to the desired shapes.
+To assist with the setup of these objects, rough diagrams were created. These diagrams were not completely final, but were helpful for visualising the coordinates needed for the indices/vertices.
+A few changes did occur between the rough images and the final version, for exampple the H shaped object had some positioning changed around, thinning down the side parts. But overall these were still very important to the initial visualisation of positioning and drawing using the indices
+These diagrams can be seen below or within the repository
+### Vertices diagrams 
+![Vertices Set up](MDImages/VerticesSetup.png) 
+### Indices diagrams
+![Indices Set up](MDImages/IndicesSetup.png) 
 
 
 
