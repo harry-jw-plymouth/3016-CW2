@@ -84,8 +84,18 @@ When setting this up, I decided to program it to be dynamic to allow for tinkeri
 ![Integer for scenery](MDImages/NumberOfItems.png)  
 When the code runs, before the scene is displayed, but after the terrain is set up. A loop will run, with an amount of iterations equal to the amount of objects declared. Each iteration will set the position for one of the tree/rocks positions (occuring in separate loops). The trees/rocks will be placed by taking coordinates from terrain vertices. This ensures that the items will be attached to the terrain, making them look believable in their placements. 
 
-To ensure that object placements dont get bunched up in one spot, the code will equally space them apart by selecting vertex positions with indexes evenly spaced apart in the array . By doing this instead of random selection, it ensures that there is a good coverage of items across the terrain. 
+To ensure that object placements dont get bunched up in one spot, the code will equally space them apart by selecting vertex positions with indexes evenly spaced apart in the array . By doing this instead of random selection, it ensures that there is a good coverage of items across the terrain. Initially this solution worked to have good object coverage/spread, but the way indexes were perfectly spread apart did lead to objects being placed too evenly, to the point it looks unnaturaul 
 Below is an example of the terrain with the even spacing, where you can see it looks like a pattern rather than a natually occuring set of trees 
 ![No variance](MDImages/NoVariance.png)  
+To fix this, an integer for variance was added ,making sure items werent spaced perfectly evenly.The potential variance came from a random value, that could be anywhere between the non varied previous index and the non varied next index. So for example, if the highest index in the vertex array was 100, and there was going to be 20 trees(difference of 5 between on varied indexes), the variance for the second item would be between 0 and 10.
+(Note: The idea to use this method for adding the extra variance was suggested by AI when asked about how to make the trees appear in a less uniform pattern)
+Below is the code used to set up the tree positions:
+![Tree set up](MDImages/TreeSetUp.png) 
+The end result was the objects being spread across the map with good coverage but without looking like a pattern
+Below an example of how the amount of tress can change the look of the scene can be seen:
+250 trees:
+![250 Trees](MDImages/250Trees.png)  
+50 trees:
+![50 Trees](MDImages/50Trees.png)  
 
 
