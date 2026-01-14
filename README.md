@@ -1,6 +1,17 @@
 # 3016-CW2
 
 # Video Link 
+
+# Asset Usage
+All 3d models and 2d assets used in this project do not belong to me and were downloaded from various sources on turbosquid, below is links to all 3d models used for this project. In the case of the wood texture, it was reused from the lab session
+Note: some files included here did not end up in the final project, but they do still exist in the files
+Butterfly: https://www.turbosquid.com/3d-models/butterfly-fly-3d-obj/460590
+Large tree: https://www.turbosquid.com/3d-models/3d-fairy-tree-model-1981463
+Rock:https://www.turbosquid.com/3d-models/rock07base3ds-3d-1899446
+Tree:https://www.turbosquid.com/3d-models/gentree-103-generic-tree-103-3d-model-2062798
+WinterTree: https://www.turbosquid.com/3d-models/3d-oak-winter-4-tree-model-1384368
+wood texture: Lab session
+
 # Gameplay description 
 The gameplay is relatively simple, as the project is mostly focused on the scene itself rather than what you can do in the scene. However it does still contain some notable gameplay elements.
 A key element of this was players ability to move around the scene using key inputs. These are done with a WASD control scheme, where w moves forwards, S moves backwards, A moves left and D moves right. This Control scheme was chosen as it is common in many games of this nature meaning it would be quick for players to pick up and understand 
@@ -84,8 +95,31 @@ When setting this up, I decided to program it to be dynamic to allow for tinkeri
 ![Integer for scenery](MDImages/NumberOfItems.png)  
 When the code runs, before the scene is displayed, but after the terrain is set up. A loop will run, with an amount of iterations equal to the amount of objects declared. Each iteration will set the position for one of the tree/rocks positions (occuring in separate loops). The trees/rocks will be placed by taking coordinates from terrain vertices. This ensures that the items will be attached to the terrain, making them look believable in their placements. 
 
-To ensure that object placements dont get bunched up in one spot, the code will equally space them apart by selecting vertex positions with indexes evenly spaced apart in the array . By doing this instead of random selection, it ensures that there is a good coverage of items across the terrain. 
+To ensure that object placements dont get bunched up in one spot, the code will equally space them apart by selecting vertex positions with indexes evenly spaced apart in the array . By doing this instead of random selection, it ensures that there is a good coverage of items across the terrain. Initially this solution worked to have good object coverage/spread, but the way indexes were perfectly spread apart did lead to objects being placed too evenly, to the point it looks unnaturaul 
 Below is an example of the terrain with the even spacing, where you can see it looks like a pattern rather than a natually occuring set of trees 
 ![No variance](MDImages/NoVariance.png)  
+To fix this, an integer for variance was added ,making sure items werent spaced perfectly evenly.The potential variance came from a random value, that could be anywhere between the non varied previous index and the non varied next index. So for example, if the highest index in the vertex array was 100, and there was going to be 20 trees(difference of 5 between on varied indexes), the variance for the second item would be between 0 and 10.
+(Note: The idea to use this method for adding the extra variance was suggested by AI when asked about how to make the trees appear in a less uniform pattern)
+Below is the code used to set up the tree positions:
+![Tree set up](MDImages/TreeSetUp.png) 
+The end result was the objects being spread across the map with good coverage but without looking like a pattern
+Below an example of how the amount of tress can change the look of the scene can be seen:
+250 trees:
+![250 Trees](MDImages/250Trees.png)  
+50 trees:
+![50 Trees](MDImages/50Trees.png)  
+
+## Use of AI statement 
+An important thing to note for this project was that Generative AI was used in a partnered role throughout different parts of the project.
+The main way it was used was as a coding assistant, which included a few different things. Most prominenelty, it was used for debugging, when a situation arose where looking over the code did not reveal where the issue is and a more thorough and timely debugging process was required, AI was used to diagnose the issue and suggest repairs, which saved valuable time. One example of where this was done was when a model was added in and it was appearing with no textures. After some back and forth where I confirmed that the file path was correct, it suggested adding a seperate shader for the models, and this ended up working.
+In addition, it was used to assist with some bits of code where initally I was unsure how to approach it. A key example of this was quite early on, where I was unsure how to convert the hilly terrain from labs into one central big hill. The AI showed me a few edits to be made to generate a single, taller hill(as opposed to multiple smaller ones). With that part done, and with an understanding of how it now worked, I was able to fine tune it to exactly what I wanted, changing the the height/steepness as well as editing the size of the terrain until I was satisfied with the hill shape
+Another example of where it was used as an assisting role was when I was writing the code for checking that a user does not go beneath the terrain. For this I was not sure how to make a comparison between the position of the terrain and the real world position of the user, as this was needed to get the height of the terrain where the camera was. In this case,AI showed how to convert the real world position of the camera to a value relative to the positioning of the terrain and also suggested some small refinements to the function for getting the terrain height as a whole.
+Another place where AI was used was for making the gitignore. As it was the first time I was using open gl, I was not sure of exactly what to ignore so AI helped for this purpose.
+Overall AI was a helpful tool for the work done here, and while it is not a perfect tool,it was still able to save lots of time debugging, and was also very useful for tricky bits of code which would have taken valuable programming time for other features to figure out 
+# Evaluation 
+Overall I believe that, while far from perfect, I have created a scene with a fair amount going on. The implementation of a dynamic system for distributing items around the map is definitely a highlight in my opinion, as it allows for lots of tinkering in terms of getting the scene correct without having to spend unnecessary time hard coding, and overall, I think the aesthetic of trees on a hill is rather nice. 
+I do however feel like the scene falls somewhat short in places, as there is not a massive amount going on in this scene at the top of the hill, where I wanted something interesting to be. With more time I wanted to implement a much more interesting scene at the top of the hill, preferably, with enough time I would have created a scene of a garden. But in the end it just became a place to leave the singature objects. If I could do this again I would spend more time getting a nice scene going there before filling the rest of the map
+
+
 
 
