@@ -707,7 +707,7 @@ void SetUpTerrain() {
     //Get Coordinates for trees and other repeated objects to place around
     SetPosForModels();
 }
-int ButterflyYDirCount=0;
+int ButterflyYDirCount=10;
 int ButterflyXDirCount = 0;
 int RotateFrame = 16;
 float Rotation = 0.0f;
@@ -736,7 +736,7 @@ void MoveButterFly() {
     if (RotateFrame < 16) {
         Rotation += 11.25f;
         RotateFrame++;
-        cout<<"Rotate frame \n";
+        //cout<<"Rotate frame \n";
     }
     ButterflyCurrentPos.y += YSpeed * deltaTime;
     ButterflyCurrentPos.z += XSpeed * deltaTime;
@@ -785,7 +785,7 @@ void SecondMoveButterFly() {
     SecondButterflyModel = scale(SecondButterflyModel, vec3(0.0025f));
     //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
 }
-int ThirdButterflyYDirCount = 0;
+int ThirdButterflyYDirCount = 5;
 int ThirdButterflyXDirCount = 0;
 int ThirdRotateFrame = 16;
 float ThirdRotation = 0.0f;
@@ -865,6 +865,7 @@ int main()
     Model Rock("media/rock/Rock07-Base.obj");;
     Model Butterfly("media/Bird/_butterfly.obj");
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
+    Model Plant("media/Plant/Alien Plant.obj");
     // Only use centre tree when required, causes slow down
    //  Model CenterTree("media/CenterTree/MainTree.obj");
     Shaders.use();
@@ -885,6 +886,7 @@ int main()
     mat4 ScatteredModel = mat4(1.0f);
     mat4 ScatteredRockModel = mat4(1.0f);
     mat4 MainTreeModel = mat4(1.0f);
+    mat4 PlantModel = mat4(1.0f);
 
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
@@ -892,6 +894,8 @@ int main()
     //Elevation to look upon terrain
     model = translate(model, TerrainTallestPointCoords);
     MainTreeModel = translate(MainTreeModel, TerrainTallestPointCoords);
+    PlantModel = translate(PlantModel, TerrainTallestPointCoords + vec3(0.3f));
+    PlantModel = translate(PlantModel, vec3(0.0f,-0.5f,0.0f));
 
     //Set Butterfly to start position
     ButterflyModel = translate(ButterflyModel, TerrainTallestPointCoords);
@@ -913,6 +917,7 @@ int main()
     //Scaling to zoom in
     model = scale(model, vec3(0.025f, 0.025f, 0.025f));
     MainTreeModel = scale(MainTreeModel, vec3(0.05f));
+    PlantModel = scale(PlantModel, vec3(0.0025f));
 
     //Function sets up vertices and indices for the H and W objects 
     SetUpObject();
@@ -967,7 +972,6 @@ int main()
         Shaders.setMat4("mvpIn", mvp);
         Butterfly.Draw(Shaders);
 
-
         
         mvp = projection * view * TerrainModel;
 
@@ -1013,6 +1017,11 @@ int main()
         mvp = projection * view * MainTreeModel;
         Shaders.setMat4("mvpIn", mvp);
         Tree.Draw(Shaders);
+
+        //Draw plant at the top of the hill
+        mvp = projection * view * PlantModel;
+        Shaders.setMat4("mvpIn", mvp);
+        Plant.Draw(Shaders);
 
         // Main tree (slows preformance)
       //  mvp = projection * view * MainTreeModel;
