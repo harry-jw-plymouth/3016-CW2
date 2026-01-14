@@ -1,0 +1,20 @@
+newmtl material_0
+d 1
+Kd 0.69411767 0.69411767 0.69411767
+map_Kd ./Maps/textured-tree-bark-free14.jpg
+
+newmtl material_1
+d 1
+Kd 1 1 1
+map_Kd ./Maps/freenaturestock-304.jpeg
+
+newmtl material_2
+d 1
+Kd 0.99215686 0.99215686 0.99215686
+map_Kd ./Maps/diffcol1.jpg
+
+newmtl material_3
+d 1
+Kd 1 1 1
+map_Kd ./Maps/Leaf_3.jpg
+
