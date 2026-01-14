@@ -1,4 +1,4 @@
-# 3016-CW2
+<img width="1246" height="374" alt="image" src="https://github.com/user-attachments/assets/de91e75e-5c94-49d7-b6c2-9e0bec885a13" /># 3016-CW2
 
 # Video Link 
 # Gameplay description 
@@ -25,3 +25,46 @@ An example of this can be seen below where both models and shaders are loaded
 ## Glad 
 While open GLs libraries are very effective, they cannot be used effectively without the help of a tool to help them be loaded. Glad is used for this purpose, as it manages the function pointers needed in OpenGL.
 While GLAD is only seen once in the code (when it is initially loaded) it is actually used all throughout the code, as without it , the required function pointers would not be possible to load and thus the open gl library would be essentially useless 
+## Fast Noise Lite
+Fast noise lite was used to generate the terrain used in the scene. This was very important to the scene as without it, the scene would either be a set of floating models or a model for the terrain itself would need to be made. Terrain was set up by first specifying the type of noise the terrain should use. In this case perlin noise was used to allow for random terrain to be generated while still looking like terrain that could realistically exist. With the terrain noise specified, the terrain vertices are generated, aswell as setting any biome noise to allow for a varied look in the terrain. 
+With terrain now set up it is now rendered alongside everything else in the render loop
+Below is an example of this being used, where the nosie type is specified.
+![Fast noise lite Example](MDImages/FNLUseExample.png)
+
+# Game programming patterns
+## Game Loop
+The core of the scene is built using the game loop programming pattern, essentially having everything rendered repeatedly inside a while loop which continues until the scene is exited/closed. Every iteration of the loop, the program will check for any user inputs, in the case of this scene, it checks for W,A,S,D key clicks as mouse movement. 
+When it detects a key input, the relevant changes are made to data in the scene, with WASD being used for movement and the mouse being used to change the direction of the camera. Then on the next frame/loop iteration, the scene being displayed will be re rendered to reflect the changes .
+![Render loop](MDImages/RenderLoopCondition.png)
+## Dirty flag
+While the game loop method is very effective for drawing and rendering the scene, it does contain some drawbacks. Notably in regards to performance. This can cause an issue when the scene starts to get more complex, as rendering many objects every single frame will inevitably cause the scene to slow down. Therefore the game incorparetes a boolean flag, where expensice items in the scene are only rendered if something occurs to justify it (e.g a mouse movement or wasd click)
+Below is the check done in the render loop and an example of where the flag is updated in the input detection function
+![Dirty flag](MDImages/DirtyFlagPattern.png)
+![Dirty flag catch](MDImages/DirtyFlagExample.png)
+## Command pattern
+The scene also contains a command pattern. In the game loop, 2 functions are called. One will check for any key inputs,and the other will check for mouse inputs. The code will check for what was inputted and adjust the game state accordingly, with WASD moving the position of the player and the mouse being used to move the direction the camera is looking
+# Sample Screens
+## Exception handling
+To ensure the user was able to see as much of the scene as possible. Movement was implemented, which allowed both moving position and changing the way the camera is looking. 
+To make sure the user did not simply go through the ground to an empty scene below, a check was added to make sure the camera's height position could not go lower than the terrain at the position the current user was at. Whenever a user would move the camera, the scene would check that their position was not low enough to be going through terrain and if they had in fact gone below the current position's terrain, the camera's Y positioning would be set to be above it.
+![Height check](MDImages/TerrainHeightCheck.png)
+This came with a key exception to handle as if the user went out of bounds of the terrain, the code would attempt to check the terrains current position, and when it couldnt find it, a crash would occur. Therefore a check had to be added
+
+(Note: this function was created with the assistance of AI, for more details see the AI statement later in this file)
+![Height get function](MDImages/GetHeightFunction.png) 
+Essentially, the cameras x and y position were converted into what tile the user is currently in, and if it was more than the maximum or less than 0, a 0 value would be returned, preventing the code from causing an error when not within the bounds of the terrain
+## Initialisation 
+There were a few instances within the code where something had to be initialised before it could be used (e.g features from libraries or assets). In these cases, a check was done to ensure nothing went wrong during this initialisation that would cause an error. For these cases, a check was done, and if it failed then the code would exit cleanly. If it did not exit cleanly and instead tried to continue, a full on crash would occur instead. 
+
+Below are a few examples 
+GLFW window initilasation: 
+![GLFW initialisation](MDImages/GLFWInit.png) 
+GLad initialisation: 
+![Glad initialisation](MDImages/GladInit.png) 
+Texture asset loading:
+![texture initialisation](MDImages/TextureInit.png) 
+
+
+
+
+
