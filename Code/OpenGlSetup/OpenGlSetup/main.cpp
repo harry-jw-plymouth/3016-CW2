@@ -115,6 +115,10 @@ vec3 ButterflyCurrentPos(0.0f, 5.0f, 0.0f);
 mat4 SecondButterflyModel = mat4(1.0f);
 vec3 SecondButterFlyPos(0.0f, 0.0f, 0.0f);
 
+mat4 ThirdButterflyModel = mat4(1.0f);
+vec3 ThirdButterFlyPos(0.0f, 0.0f, 0.0f);
+
+
 //W shaped object vertices
 float SecondObjectVertices[] = {
     //Front
@@ -718,7 +722,7 @@ void MoveButterFly() {
         CurrentlyMovingUp = !CurrentlyMovingUp;
         ButterflyYDirCount = 0;
     }
-    if (ButterflyXDirCount == 500) {
+    if (ButterflyXDirCount == 600) {
         ButterflyXDirCount = 0;
         CurrentlyMovingForward = !CurrentlyMovingForward;
         RotateFrame = 0;
@@ -745,8 +749,8 @@ void MoveButterFly() {
 int SecondButterflyYDirCount = 0;
 int SecondButterflyXDirCount = 0;
 int SecondRotateFrame = 16;
-float SecondRotation = 0.0f;
-bool SecondCurrentlyMovingUp = true; bool SecondCurrentlyMovingForward=false;
+float SecondRotation = -180.0f;
+bool SecondCurrentlyMovingUp = true; bool SecondCurrentlyMovingForward=true;
 void SecondMoveButterFly() {
     float YSpeed = 0.1f;
     float XSpeed = 0.2f;
@@ -779,6 +783,45 @@ void SecondMoveButterFly() {
     SecondButterflyModel = translate(SecondButterflyModel, SecondButterFlyPos);
     SecondButterflyModel = rotate(SecondButterflyModel, radians(SecondRotation), vec3(0.0f, 1.0f, 0.0f));
     SecondButterflyModel = scale(SecondButterflyModel, vec3(0.0025f));
+    //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
+}
+int ThirdButterflyYDirCount = 0;
+int ThirdButterflyXDirCount = 0;
+int ThirdRotateFrame = 16;
+float ThirdRotation = 0.0f;
+bool ThirdCurrentlyMovingUp = true; bool ThirdCurrentlyMovingForward = false;
+void ThirdMoveButterFly() {
+    float YSpeed = 0.1f;
+    float XSpeed = 0.2f;
+    ThirdButterflyYDirCount++;
+    ThirdButterflyXDirCount++;
+
+    if (ThirdButterflyYDirCount == 20) {
+        ThirdCurrentlyMovingUp = !ThirdCurrentlyMovingUp;
+        ThirdButterflyYDirCount = 0;
+    }
+    if (ThirdButterflyXDirCount == 400) {
+        ThirdButterflyXDirCount = 0;
+        ThirdCurrentlyMovingForward = !ThirdCurrentlyMovingForward;
+        ThirdRotateFrame = 0;
+    }
+    if (!ThirdCurrentlyMovingUp) {
+        YSpeed = -0.1f;
+    }
+    if (!ThirdCurrentlyMovingForward) {
+        XSpeed = -0.2f;
+    }
+    if (ThirdRotateFrame < 16) {
+        ThirdRotation += 11.25f;
+        ThirdRotateFrame++;
+        cout << "Rotate frame \n";
+    }
+    ThirdButterFlyPos.y += YSpeed * deltaTime;
+    ThirdButterFlyPos.z += XSpeed * deltaTime;
+    ThirdButterflyModel = mat4(1.0f);
+    ThirdButterflyModel = translate(ThirdButterflyModel, ThirdButterFlyPos);
+    ThirdButterflyModel = rotate(ThirdButterflyModel, radians(ThirdRotation), vec3(0.0f, 1.0f, 0.0f));
+    ThirdButterflyModel = scale(ThirdButterflyModel, vec3(0.0025f));
     //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
 }
 int main()
@@ -855,7 +898,10 @@ int main()
     ButterflyModel = translate(ButterflyModel, vec3(0.3,0.3,0.3));
     ButterflyModel = scale(ButterflyModel, vec3(0.0025, 0.0025, 0.0025));
 
-    SecondButterFlyPos = vec3(TerrainTallestPointCoords +vec3( 0.3f));
+    ButterflyCurrentPos = vec3(TerrainTallestPointCoords.x + 0.8, TerrainTallestPointCoords.y - 0.5, TerrainTallestPointCoords.z + 0.5);
+    SecondButterFlyPos = vec3(TerrainTallestPointCoords.x+0.5,TerrainTallestPointCoords.y,TerrainTallestPointCoords.z+ 0.45);
+    ThirdButterFlyPos = vec3(TerrainTallestPointCoords + vec3(0.3f));
+
 
 
     //Model for terrain
@@ -910,6 +956,14 @@ int main()
         SecondMoveButterFly();
         //Draw Butterfly
         mvp = projection * view * SecondButterflyModel;
+        Shaders.setMat4("mvpIn", mvp);
+        Butterfly.Draw(Shaders);
+
+        //Move third butterfly
+        //Move model each frame
+        ThirdMoveButterFly();
+        //Draw Butterfly
+        mvp = projection * view * ThirdButterflyModel;
         Shaders.setMat4("mvpIn", mvp);
         Butterfly.Draw(Shaders);
 
