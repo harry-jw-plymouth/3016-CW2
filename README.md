@@ -78,6 +78,14 @@ These diagrams can be seen below or within the repository
 ### Indices diagrams
 ![Indices Set up](MDImages/IndicesSetup.png) 
 
+## Dynamic placement/positioning of scenery
+Around the scene, there are a variety of scenery objects(for example trees). These objects indiviually were nothing of note and were not a focus of the scene. But together come together to make the scene much more interesting.
+When setting this up, I decided to program it to be dynamic to allow for tinkering so that I could choose how populated I wanted the scene to be. The end result of this was an integer for each object type which can be easily changed before running the code
+![Integer for scenery](MDImages/NumberOfItems.png)  
+When the code runs, before the scene is displayed, but after the terrain is set up. A loop will run, with an amount of iterations equal to the amount of objects declared. Each iteration will set the position for one of the tree/rocks positions (occuring in separate loops). The trees/rocks will be placed by taking coordinates from terrain vertices. This ensures that the items will be attached to the terrain, making them look believable in their placements. 
 
+To ensure that object placements dont get bunched up in one spot, the code will equally space them apart by selecting vertex positions with indexes evenly spaced apart in the array . By doing this instead of random selection, it ensures that there is a good coverage of items across the terrain. 
+Below is an example of the terrain with the even spacing, where you can see it looks like a pattern rather than a natually occuring set of trees 
+![No variance](MDImages/NoVariance.png)  
 
 
