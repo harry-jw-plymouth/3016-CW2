@@ -5,11 +5,19 @@
 # Asset Usage
 All 3d models and 2d assets used in this project do not belong to me and were downloaded from various sources on turbosquid, below is links to all 3d models used for this project. In the case of the wood texture, it was reused from the lab session
 Note: some files included here did not end up in the final project, but they do still exist in the files
+
 Butterfly: https://www.turbosquid.com/3d-models/butterfly-fly-3d-obj/460590
+
 Large tree: https://www.turbosquid.com/3d-models/3d-fairy-tree-model-1981463
+
 Rock:https://www.turbosquid.com/3d-models/rock07base3ds-3d-1899446
+
 Tree:https://www.turbosquid.com/3d-models/gentree-103-generic-tree-103-3d-model-2062798
+
 WinterTree: https://www.turbosquid.com/3d-models/3d-oak-winter-4-tree-model-1384368
+
+Plant: https://www.turbosquid.com/3d-models/alien-plant-3d-model-1904766
+
 wood texture: Lab session
 
 # Gameplay description 
