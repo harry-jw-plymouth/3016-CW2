@@ -700,12 +700,43 @@ void SetUpTerrain() {
     //Get Coordinates for trees and other repeated objects to place around
     SetPosForModels();
 }
+int ButterflyYDirCount=0;
+int ButterflyXDirCount = 0;
+int RotateFrame = 16;
+float Rotation = 0.0f;
+bool CurrentlyMovingUp = true; bool CurrentlyMovingForward;
 void MoveButterFly() {
-    float Speed = 0.1f;
-    ButterflyCurrentPos.x += Speed * deltaTime;
+    float YSpeed = 0.1f;
+    float XSpeed = 0.2f;
+    ButterflyYDirCount++;
+    ButterflyXDirCount++;
+    
+    if (ButterflyYDirCount == 20) {
+        CurrentlyMovingUp = !CurrentlyMovingUp;
+        ButterflyYDirCount = 0;
+    }
+    if (ButterflyXDirCount == 500) {
+        ButterflyXDirCount = 0;
+        CurrentlyMovingForward = !CurrentlyMovingForward;
+        RotateFrame = 0;
+    }
+    if (!CurrentlyMovingUp) {
+        YSpeed = -0.1f;
+    }
+    if (!CurrentlyMovingForward) {
+        XSpeed = -0.2f;
+    }
+    if (RotateFrame < 16) {
+        Rotation += 11.25f;
+        RotateFrame++;
+        cout<<"Rotate frame \n";
+    }
+    ButterflyCurrentPos.y += YSpeed * deltaTime;
+    ButterflyCurrentPos.z += XSpeed * deltaTime;
     ButterflyModel = mat4(1.0f);
     ButterflyModel = translate(ButterflyModel, ButterflyCurrentPos);
-    ButterflyModel = scale(ButterflyModel, vec3(0.25f));
+    ButterflyModel = rotate(ButterflyModel, radians(Rotation), vec3(0.0f, 1.0f, 0.0f));
+    ButterflyModel = scale(ButterflyModel, vec3(0.0025f));
     //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
 
 }
@@ -779,7 +810,8 @@ int main()
     MainTreeModel = translate(MainTreeModel, TerrainTallestPointCoords);
 
     //Set Butterfly to start position
-    ButterflyModel = translate(ButterflyModel, vec3(0.0f, 5.0f, 0.0f));
+    ButterflyModel = translate(ButterflyModel, TerrainTallestPointCoords);
+    ButterflyModel = translate(ButterflyModel, vec3(0.3,0.3,0.3));
     ButterflyModel = scale(ButterflyModel, vec3(0.0025, 0.0025, 0.0025));
 
 
@@ -812,20 +844,22 @@ int main()
         //Input
         ProcessUserInput(window);
 
-        //Move model each frame
-        MoveButterFly();
-        //Draw Butterfly
-        mat4 view;
-        mvp = projection * view * ButterflyModel;
-        Shaders.setMat4("mvpIn", mvp);
-        Butterfly.Draw(Shaders);
-
+        
         //Rendering
         glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display 
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
 
         UpdateNeeded = false;
+
+        //Move model each frame
+         MoveButterFly();
+        //Draw Butterfly
+        mat4 view;
+        mvp = projection * view * ButterflyModel;
+        Shaders.setMat4("mvpIn", mvp);
+        Butterfly.Draw(Shaders);
+
 
         //Transformations
         view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
