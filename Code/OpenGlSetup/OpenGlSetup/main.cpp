@@ -305,7 +305,8 @@ static int SetUpObject() {
     ObjectTransformModel = mat4(1.0f);
     //   SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.25, 5, 0.0));
     ObjectTransformModel = translate(ObjectTransformModel, TerrainTallestPointCoords);
-    ObjectTransformModel = translate(ObjectTransformModel, vec3(-0.7, 0.10, 0.7));
+ //   ObjectTransformModel = translate(ObjectTransformModel, vec3(-0.7, 0.10, 0.7));
+   ObjectTransformModel = translate(ObjectTransformModel, vec3(-0.7, 1.0, 0.7));
     //  SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.5, 0.5, 0.5));
     ObjectTransformModel = rotate(ObjectTransformModel, radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
     ObjectTransformModel = scale(ObjectTransformModel, vec3(0.2, 0.2, 0.2));
@@ -347,7 +348,8 @@ static int SetUpObject() {
     //Postion model to center of map
     SecondObjectTransformModel = mat4(1.0f);
     SecondObjectTransformModel = translate(SecondObjectTransformModel, TerrainTallestPointCoords);
-    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.3, 0.10, 0.3));
+   // SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.3, 0.10, 0.3));
+    SecondObjectTransformModel = translate(SecondObjectTransformModel, vec3(-0.3, 1.0, 0.3));
     SecondObjectTransformModel = rotate(SecondObjectTransformModel, radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
     SecondObjectTransformModel = scale(SecondObjectTransformModel, vec3(0.2, 0.2, 0.2));
 
@@ -496,8 +498,7 @@ void SetPosForModels() {
        // essentially i multiplied The Number of vertices in the terrain divided by the number of trees
        // Variance is then added to the index to ensure trees are added in a semi realistic pattern
        // variance is random, but limited so trees are still spread apart properly
-        FinalIndex = (i * (HighestIndex / NumberOfTrees));
-            //+ rand() % (HighestIndex / NumberOfTrees);
+        FinalIndex = (i * (HighestIndex / NumberOfTrees)) + rand() % (HighestIndex / NumberOfTrees);
 
         //Check Variance doesnt make the index higher than the length of the array it is indexing
         if (HighestIndex - 1 < FinalIndex) {
@@ -750,7 +751,7 @@ int main()
     Model Butterfly("media/Bird/_butterfly.obj");
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
     // Only use centre tree when required, causes slow down
-      //  Model CenterTree("media/CenterTree/MainTree.obj");
+   //  Model CenterTree("media/CenterTree/MainTree.obj");
     Shaders.use();
 
     //Sets the viewport size within the window to match the window size of 1280x720
@@ -790,7 +791,7 @@ int main()
 
     //Scaling to zoom in
     model = scale(model, vec3(0.025f, 0.025f, 0.025f));
-    MainTreeModel = scale(MainTreeModel, vec3(0.00025f));
+    MainTreeModel = scale(MainTreeModel, vec3(0.05f));
 
     //Function sets up vertices and indices for the H and W objects 
     SetUpObject();
@@ -869,7 +870,7 @@ int main()
         //Drawing models
 
         //draw main tree at tallest point
-        mvp = projection * view * model;
+        mvp = projection * view * MainTreeModel;
         Shaders.setMat4("mvpIn", mvp);
         Tree.Draw(Shaders);
 
