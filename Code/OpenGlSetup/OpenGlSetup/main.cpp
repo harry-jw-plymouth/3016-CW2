@@ -100,13 +100,17 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 150;
+const int  NumberOfTrees = 50;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
 //list of scattered rock model placement positions
-const int  NumberOfRocks = 200;
+const int  NumberOfRocks = 100;
 vec3 RocksPositions[NumberOfRocks];
+
+//Postion for butterfly
+mat4 ButterflyModel = mat4(1.0f);
+vec3 ButterflyCurrentPos(0.0f, 5.0f, 0.0f);
 
 //W shaped object vertices
 float SecondObjectVertices[] = {
@@ -357,15 +361,15 @@ static int SetUpObject() {
 
     //texture
     int width, height, colourChannels;
-    //Retrieves texture data
-    //Retrieves texture data
+
+    //Get texture from media
     unsigned char* data = stbi_load("media/woodPlanks.jpg", &width, &height, &colourChannels, 0);
-    if (data) //If retrieval successful
+    if (data) //If successful
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
-    else //If retrieval unsuccessful
+    else //If unsuccessful
     {
         cout << "Failed to load texture.\n";
         return -1;
@@ -693,6 +697,15 @@ void SetUpTerrain() {
     //Get Coordinates for trees and other repeated objects to place around
     SetPosForModels();
 }
+void MoveButterFly() {
+    float Speed = 0.1f;
+    ButterflyCurrentPos.x += Speed * deltaTime;
+    ButterflyModel = mat4(1.0f);
+    ButterflyModel = translate(ButterflyModel, ButterflyCurrentPos);
+    ButterflyModel = scale(ButterflyModel, vec3(0.25f));
+    //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
+
+}
 int main()
 {
     //Initialisation of GLFW
@@ -754,7 +767,6 @@ int main()
     mat4 ScatteredModel = mat4(1.0f);
     mat4 ScatteredRockModel = mat4(1.0f);
     mat4 MainTreeModel = mat4(1.0f);
-    mat4 ButterflyModel = mat4(1.0f);
 
     //Looking straight forward
     model = rotate(model, radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
@@ -763,7 +775,7 @@ int main()
     model = translate(model, TerrainTallestPointCoords);
     MainTreeModel = translate(MainTreeModel, TerrainTallestPointCoords);
 
-    //Set Bird to start position
+    //Set Butterfly to start position
     ButterflyModel = translate(ButterflyModel, vec3(0.0f, 5.0f, 0.0f));
     ButterflyModel = scale(ButterflyModel, vec3(0.0025, 0.0025, 0.0025));
 
@@ -797,95 +809,101 @@ int main()
         //Input
         ProcessUserInput(window);
 
+        //Move model each frame
+        MoveButterFly();
+        //Draw Butterfly
+        mat4 view;
+        mvp = projection * view * ButterflyModel;
+        Shaders.setMat4("mvpIn", mvp);
+        Butterfly.Draw(Shaders);
+
+        //Rendering
+        glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display 
+        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        UpdateNeeded = false;
+
+        //Transformations
+        view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
+        mvp = projection * view * TerrainModel;
+
+        //Set shader for terrain
+        TerrainShader.use();
+        TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
+
+        //Render terrain
+        glBindVertexArray(TerrainVAOs[0]);
+        glDrawElements(GL_TRIANGLES, TrianglesGrid * 3, GL_UNSIGNED_INT, 0);
+
+        //Draw H Object
+        ObjectShader.use();
+        ObjectShader.setInt("textureIn", 0);
+        Objectmvp = projection * view * ObjectTransformModel;
+        ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        glBindVertexArray(ObjectVAOS[0]);
+        // glBindTexture(GL_TEXTURE_2D, texture);
+
+        glDrawElements(GL_TRIANGLES, totalIndexCount, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+
+        //Draw W Second object
+        Objectmvp = projection * view * SecondObjectTransformModel;
+        ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        glBindVertexArray(SecondObjectVAOs[0]);
+
+        glDrawElements(GL_TRIANGLES, totalIndexCountForSecondObject, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+        //Drawing models
+
+        //draw main tree at tallest point
+        mvp = projection * view * model;
+        Shaders.setMat4("mvpIn", mvp);
+        Tree.Draw(Shaders);
+
+        // Main tree (slows preformance)
+      //  mvp = projection * view * MainTreeModel;
+      //  Shaders.setMat4("mvpIn", mvp);
+      //  CenterTree.Draw(Shaders);
+
+        Shaders.use();
+        //Draw scattered trees
+        for (int i = 0; i < NumberOfTrees; i++) {
+            mat4 ScatteredModel = mat4(1.0f);
+            ScatteredModel = translate(ScatteredModel, TreesPositions[i]);
+            ScatteredModel = scale(ScatteredModel, vec3(0.025f, 0.025f, 0.025f));
+
+            mvp = projection * view * ScatteredModel;
+            Shaders.setMat4("mvpIn", mvp);
+
+            Tree.Draw(Shaders);
+
+        }
+        //Draw scattered rocks
+        for (int i = 0; i < NumberOfRocks; i++) {
+            mat4 ScatteredRockModel = mat4(1.0f);
+            ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
+            ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0005f, 0.0005f, 0.0005f));
+            mvp = projection * view * ScatteredRockModel;
+            Shaders.setMat4("mvpIn", mvp);
+            Rock.Draw(Shaders);
+
+        }
+
         //Check if update needed
         //Only updates if necessary(e.g on user input)
         if (UpdateNeeded) {
-            UpdateNeeded = false;
-
-            //Rendering
-            glClearColor(0.25f, 0.0f, 1.0f, 1.0f); //Colour to display 
-            glClear(GL_COLOR_BUFFER_BIT);
-            glClear(GL_DEPTH_BUFFER_BIT);
-
-            //Transformations
-            mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
-            mvp = projection * view * TerrainModel;
-
-            //Set shader for terrain
-            TerrainShader.use();
-            TerrainShader.setMat4("mvpIn", mvp); //Setting of uniform with Shader class
-
-            //Render terrain
-            glBindVertexArray(TerrainVAOs[0]);
-            glDrawElements(GL_TRIANGLES, TrianglesGrid * 3, GL_UNSIGNED_INT, 0);
-
-            //Draw H Object
-            ObjectShader.use();
-            ObjectShader.setInt("textureIn", 0);
-            Objectmvp = projection * view * ObjectTransformModel;
-            ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
-
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texture);
-
-            glBindVertexArray(ObjectVAOS[0]);
-            // glBindTexture(GL_TEXTURE_2D, texture);
-
-            glDrawElements(GL_TRIANGLES, totalIndexCount, GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-
-
-            //Draw W Second object
-            Objectmvp = projection * view * SecondObjectTransformModel;
-            ObjectShader.setMat4("transformIn", Objectmvp); //Setting of uniform with Shader class
-
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texture);
-
-            glBindVertexArray(SecondObjectVAOs[0]);
-
-            glDrawElements(GL_TRIANGLES, totalIndexCountForSecondObject, GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-
-            //Drawing models
-            //Draw Bird
-            mvp = projection * view * ButterflyModel;
-            Shaders.setMat4("mvpIn", mvp);
-            Butterfly.Draw(Shaders);
-
-            //draw main tree at tallest point
-            mvp = projection * view * model;
-            Shaders.setMat4("mvpIn", mvp);
-            Tree.Draw(Shaders);
-
-            // Main tree (slows preformance)
-          //  mvp = projection * view * MainTreeModel;
-          //  Shaders.setMat4("mvpIn", mvp);
-          //  CenterTree.Draw(Shaders);
-
-            Shaders.use();
-            //Draw scattered trees
-            for (int i = 0; i < NumberOfTrees; i++) {
-                mat4 ScatteredModel = mat4(1.0f);
-                ScatteredModel = translate(ScatteredModel, TreesPositions[i]);
-                ScatteredModel = scale(ScatteredModel, vec3(0.025f, 0.025f, 0.025f));
-
-                mvp = projection * view * ScatteredModel;
-                Shaders.setMat4("mvpIn", mvp);
-
-                Tree.Draw(Shaders);
-
-            }
-            //Draw scattered rocks
-            for (int i = 0; i < NumberOfRocks; i++) {
-                mat4 ScatteredRockModel = mat4(1.0f);
-                ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
-                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0005f, 0.0005f, 0.0005f));
-                mvp = projection * view * ScatteredRockModel;
-                Shaders.setMat4("mvpIn", mvp);
-                Rock.Draw(Shaders);
-
-            }
+            
         }
 
         //Check for OpenGL errors
