@@ -100,12 +100,18 @@ bool UpdateNeeded = true;
 vec3 TerrainTallestPointCoords;
 
 //list of scattered trees coordinates 
-const int  NumberOfTrees = 50;
+const int  NumberOfTrees = 150;
 vec3 TreesPositions[NumberOfTrees];
 int indexesToPlaceTrees[NumberOfTrees];
 
+//ist of scattered bushes
+const int  NumberOfBushes = 200;
+vec3 BushesPositions[NumberOfBushes];
+int indexesToPlaceBushes[NumberOfBushes];
+
+
 //list of scattered rock model placement positions
-const int  NumberOfRocks = 100;
+const int  NumberOfRocks = 60;
 vec3 RocksPositions[NumberOfRocks];
 
 //Postion for butterfly
@@ -517,6 +523,24 @@ void SetPosForModels() {
         TreesPositions[i].y = terrainVertices[FinalIndex][1];
         TreesPositions[i].z = terrainVertices[FinalIndex][2];
     }
+    for (int i = 0; i < NumberOfBushes; i++) {
+        // indexes dynamically set based on number of bushes required/declared earlier in code
+       // indexes chosen are equally spaced apart initially
+       // essentially i multiplied The Number of vertices in the terrain divided by the number of trees
+       // Variance is then added to the index to ensure bushes are added in a semi realistic pattern
+       // variance is random, but limited so bushes are still spread apart properly
+        FinalIndex = (i * (HighestIndex / NumberOfBushes)) + rand() % (HighestIndex / NumberOfBushes);
+
+        //Check Variance doesnt make the index higher than the length of the array it is indexing
+        if (HighestIndex - 1 < FinalIndex) {
+            FinalIndex = HighestIndex;
+        }
+
+        //set tree model position to the poistion stored at the vertices of the index
+        BushesPositions[i].x = terrainVertices[FinalIndex][0];
+        BushesPositions[i].y = terrainVertices[FinalIndex][1];
+        BushesPositions[i].z = terrainVertices[FinalIndex][2];
+    }
     //loop through every rock to be drawn on the terrain
     for (int i = 0; i < NumberOfRocks; i++) {
         //get index with variance
@@ -775,7 +799,7 @@ void SecondMoveButterFly() {
     if (SecondRotateFrame < 16) {
         SecondRotation += 11.25f;
         SecondRotateFrame++;
-        cout << "Rotate frame \n";
+       // cout << "Rotate frame \n";
     }
     SecondButterFlyPos.y += YSpeed * deltaTime;
     SecondButterFlyPos.z += XSpeed * deltaTime;
@@ -814,7 +838,7 @@ void ThirdMoveButterFly() {
     if (ThirdRotateFrame < 16) {
         ThirdRotation += 11.25f;
         ThirdRotateFrame++;
-        cout << "Rotate frame \n";
+       // cout << "Rotate frame \n";
     }
     ThirdButterFlyPos.y += YSpeed * deltaTime;
     ThirdButterFlyPos.z += XSpeed * deltaTime;
@@ -866,6 +890,7 @@ int main()
     Model Butterfly("media/Bird/_butterfly.obj");
     Model Tree("media/Tree/GenTree-103_AE3D_03122023-F1.obj");
     Model Plant("media/Plant/Alien Plant.obj");
+    Model Bush("media/Bush/Tree lowpoly.obj");
     // Only use centre tree when required, causes slow down
    //  Model CenterTree("media/CenterTree/MainTree.obj");
     Shaders.use();
@@ -1039,6 +1064,27 @@ int main()
             Tree.Draw(Shaders);
 
         }
+        for (int i = 0; i < NumberOfBushes; i++) {
+            mat4 ScatteredModel = mat4(1.0f);
+            ScatteredModel = translate(ScatteredModel, BushesPositions[i]);
+            ScatteredModel = scale(ScatteredModel, vec3(0.001f, 0.001f, 0.001f));
+
+            mvp = projection * view * ScatteredModel;
+            Shaders.setMat4("mvpIn", mvp);
+
+            Plant.Draw(Shaders);
+
+        }
+        //Draw scattered rocks
+        for (int i = 0; i < NumberOfRocks; i++) {
+            mat4 ScatteredRockModel = mat4(1.0f);
+            ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
+            ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0009f, 0.0009f, 0.0009f));
+            mvp = projection * view * ScatteredRockModel;
+            Shaders.setMat4("mvpIn", mvp);
+            Rock.Draw(Shaders);
+
+        }
 
         //Check if update needed
         //Only updates if necessary(e.g on user input)
@@ -1046,16 +1092,7 @@ int main()
             Shaders.use();
             //Draw scattered trees
            
-            //Draw scattered rocks
-            for (int i = 0; i < NumberOfRocks; i++) {
-                mat4 ScatteredRockModel = mat4(1.0f);
-                ScatteredRockModel = translate(ScatteredRockModel, RocksPositions[i]);
-                ScatteredRockModel = scale(ScatteredRockModel, vec3(0.0005f, 0.0005f, 0.0005f));
-                mvp = projection * view * ScatteredRockModel;
-                Shaders.setMat4("mvpIn", mvp);
-                Rock.Draw(Shaders);
 
-            }
         }
 
         //Check for OpenGL errors
