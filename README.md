@@ -1,6 +1,17 @@
 # 3016-CW2
 
 # Video Link 
+
+# Asset Usage
+All 3d models and 2d assets used in this project do not belong to me and were downloaded from various sources on turbosquid, below is links to all 3d models used for this project. In the case of the wood texture, it was reused from the lab session
+Note: some files included here did not end up in the final project, but they do still exist in the files
+Butterfly: https://www.turbosquid.com/3d-models/butterfly-fly-3d-obj/460590
+Large tree: https://www.turbosquid.com/3d-models/3d-fairy-tree-model-1981463
+Rock:https://www.turbosquid.com/3d-models/rock07base3ds-3d-1899446
+Tree:https://www.turbosquid.com/3d-models/gentree-103-generic-tree-103-3d-model-2062798
+WinterTree: https://www.turbosquid.com/3d-models/3d-oak-winter-4-tree-model-1384368
+wood texture: Lab session
+
 # Gameplay description 
 The gameplay is relatively simple, as the project is mostly focused on the scene itself rather than what you can do in the scene. However it does still contain some notable gameplay elements.
 A key element of this was players ability to move around the scene using key inputs. These are done with a WASD control scheme, where w moves forwards, S moves backwards, A moves left and D moves right. This Control scheme was chosen as it is common in many games of this nature meaning it would be quick for players to pick up and understand 
