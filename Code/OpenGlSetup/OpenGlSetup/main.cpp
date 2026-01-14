@@ -112,6 +112,9 @@ vec3 RocksPositions[NumberOfRocks];
 mat4 ButterflyModel = mat4(1.0f);
 vec3 ButterflyCurrentPos(0.0f, 5.0f, 0.0f);
 
+mat4 SecondButterflyModel = mat4(1.0f);
+vec3 SecondButterFlyPos(0.0f, 0.0f, 0.0f);
+
 //W shaped object vertices
 float SecondObjectVertices[] = {
     //Front
@@ -704,7 +707,7 @@ int ButterflyYDirCount=0;
 int ButterflyXDirCount = 0;
 int RotateFrame = 16;
 float Rotation = 0.0f;
-bool CurrentlyMovingUp = true; bool CurrentlyMovingForward;
+bool CurrentlyMovingUp = true; bool CurrentlyMovingForward=false;
 void MoveButterFly() {
     float YSpeed = 0.1f;
     float XSpeed = 0.2f;
@@ -738,7 +741,45 @@ void MoveButterFly() {
     ButterflyModel = rotate(ButterflyModel, radians(Rotation), vec3(0.0f, 1.0f, 0.0f));
     ButterflyModel = scale(ButterflyModel, vec3(0.0025f));
     //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
+}
+int SecondButterflyYDirCount = 0;
+int SecondButterflyXDirCount = 0;
+int SecondRotateFrame = 16;
+float SecondRotation = 0.0f;
+bool SecondCurrentlyMovingUp = true; bool SecondCurrentlyMovingForward=false;
+void SecondMoveButterFly() {
+    float YSpeed = 0.1f;
+    float XSpeed = 0.2f;
+    SecondButterflyYDirCount++;
+    SecondButterflyXDirCount++;
 
+    if (SecondButterflyYDirCount == 20) {
+        SecondCurrentlyMovingUp = !SecondCurrentlyMovingUp;
+        SecondButterflyYDirCount = 0;
+    }
+    if (SecondButterflyXDirCount == 500) {
+        SecondButterflyXDirCount = 0;
+        SecondCurrentlyMovingForward = !SecondCurrentlyMovingForward;
+        SecondRotateFrame = 0;
+    }
+    if (!SecondCurrentlyMovingUp) {
+        YSpeed = -0.1f;
+    }
+    if (!SecondCurrentlyMovingForward) {
+        XSpeed = -0.2f;
+    }
+    if (SecondRotateFrame < 16) {
+        SecondRotation += 11.25f;
+        SecondRotateFrame++;
+        cout << "Rotate frame \n";
+    }
+    SecondButterFlyPos.y += YSpeed * deltaTime;
+    SecondButterFlyPos.z += XSpeed * deltaTime;
+    SecondButterflyModel = mat4(1.0f);
+    SecondButterflyModel = translate(SecondButterflyModel, SecondButterFlyPos);
+    SecondButterflyModel = rotate(SecondButterflyModel, radians(SecondRotation), vec3(0.0f, 1.0f, 0.0f));
+    SecondButterflyModel = scale(SecondButterflyModel, vec3(0.0025f));
+    //ButterflyModel = translate(ButterflyModel, vec3(0.0f, 0.0f, Speed*deltaTime));
 }
 int main()
 {
@@ -814,6 +855,8 @@ int main()
     ButterflyModel = translate(ButterflyModel, vec3(0.3,0.3,0.3));
     ButterflyModel = scale(ButterflyModel, vec3(0.0025, 0.0025, 0.0025));
 
+    SecondButterFlyPos = vec3(TerrainTallestPointCoords +vec3( 0.3f));
+
 
     //Model for terrain
     mat4 TerrainModel = mat4(1.0f);
@@ -852,17 +895,26 @@ int main()
 
         UpdateNeeded = false;
 
+        //Transformations
+        mat4 view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
+
         //Move model each frame
          MoveButterFly();
         //Draw Butterfly
-        mat4 view;
         mvp = projection * view * ButterflyModel;
         Shaders.setMat4("mvpIn", mvp);
         Butterfly.Draw(Shaders);
 
+        //Move second butterfly
+        //Move model each frame
+        SecondMoveButterFly();
+        //Draw Butterfly
+        mvp = projection * view * SecondButterflyModel;
+        Shaders.setMat4("mvpIn", mvp);
+        Butterfly.Draw(Shaders);
 
-        //Transformations
-        view = lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp); //Sets the position of the viewer, the movement direction in relation to it & the world up direction
+
+        
         mvp = projection * view * TerrainModel;
 
         //Set shader for terrain
