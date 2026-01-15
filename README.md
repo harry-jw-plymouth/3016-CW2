@@ -134,6 +134,15 @@ Overall AI was a helpful tool for the work done here, and while it is not a perf
 Overall I believe that, while far from perfect, I have created a scene with a fair amount going on. The implementation of a dynamic system for distributing items around the map is definitely a highlight in my opinion, as it allows for lots of tinkering in terms of getting the scene correct without having to spend unnecessary time hard coding, and overall, I think the aesthetic of trees on a hill is rather nice. 
 I do however feel like the scene falls somewhat short in places, as there is not a massive amount going on in this scene at the top of the hill, where I wanted something interesting to be. With more time I wanted to implement a much more interesting scene at the top of the hill, preferably, with enough time I would have created a scene of a garden. But in the end it just became a place to leave the singature objects. If I could do this again I would spend more time getting a nice scene going there before filling the rest of the map
 
+# Appendix
+## Ai Use declaration 
+![AI form](MDIMages/AIForm.png)
+For a full description of AI use please see the AI section earlier in this report. But to summarise
+- AI was used as a coding assistant
+- AI was used for some debugging
+Signature:
+
+![Signature](MDIMages/Signature.png)
 
 
 
