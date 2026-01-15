@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\shaders\\LoadShaders.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\shaders\\LoadShaders.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\Header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\Header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -50,11 +54,23 @@
       "DocumentGroups": [
         {
           "DockedWidth": 368,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "LoadShaders.cpp",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\shaders\\LoadShaders.cpp",
+              "RelativeDocumentMoniker": "OpenGlSetup\\shaders\\LoadShaders.cpp",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\shaders\\LoadShaders.cpp",
+              "RelativeToolTip": "OpenGlSetup\\shaders\\LoadShaders.cpp",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-01-15T01:28:47.454Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "shader_m.h",
               "DocumentMoniker": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h",
@@ -72,14 +88,14 @@
               "RelativeDocumentMoniker": "OpenGlSetup\\main.cpp",
               "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\main.cpp",
               "RelativeToolTip": "OpenGlSetup\\main.cpp",
-              "ViewState": "AgIAACUEAAAAAAAAAAAcwC4EAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACoEAAAAAAAAAAAcwDYEAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-11-06T10:22:44.805Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Header.h",
               "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\Header.h",
               "RelativeDocumentMoniker": "OpenGlSetup\\Header.h",
@@ -91,7 +107,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "stb_image.h",
               "DocumentMoniker": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h",
@@ -103,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "stb_image.h",
               "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stb_image.h",
               "RelativeDocumentMoniker": "OpenGlSetup\\stb_image.h",
@@ -115,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "glad.c",
               "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\glad.c",
               "RelativeDocumentMoniker": "OpenGlSetup\\glad.c",
@@ -127,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "model.h",
               "DocumentMoniker": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h",
@@ -139,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "new_scalar.cpp",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp",
@@ -151,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "vertexshader.vert",
               "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\vertexshader.vert",
               "RelativeDocumentMoniker": "OpenGlSetup\\vertexshader.vert",
@@ -163,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "fragmentshader.frag",
               "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\fragmentshader.frag",
               "RelativeDocumentMoniker": "OpenGlSetup\\fragmentshader.frag",
@@ -175,7 +191,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "stbImageLoader.cpp",
               "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stbImageLoader.cpp",
               "RelativeDocumentMoniker": "OpenGlSetup\\stbImageLoader.cpp",

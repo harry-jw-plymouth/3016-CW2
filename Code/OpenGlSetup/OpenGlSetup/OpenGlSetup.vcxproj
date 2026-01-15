@@ -75,6 +75,10 @@
     <IncludePath>$(SolutionDir)\OpenGlSetup\Libraries\OpenGL\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\lib\Release;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\OpenGlSetup\Libraries\OpenGL\lib;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)\OpenGlSetup\libraries\OpenGL\include;$(SolutionDir)\OpenGlSetup\libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\libraries\Assimp\Binaries\include;$(SolutionDir)\OpenGlSetup\libraries\Assimp\Binaries\lib\Release;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\OpenGlSetup\libraries\OpenGL\lib;$(SolutionDir)\OpenGlSetup\libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\libraries\Assim\Binaries\include;$(SolutionDir)\OpenGlSetup\libraries\Assimp\Binaries\lib\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -123,10 +127,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\OpenGlSetup\Libraries\OpenGL\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Source\assimp\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\include;$(SolutionDir)\OpenGlSetup\Libraries\Assimp\Binaries\lib\Release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)\OpenGlSetup\libraries\OpenGL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
