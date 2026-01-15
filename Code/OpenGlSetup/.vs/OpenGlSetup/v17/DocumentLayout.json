@@ -1,0 +1,193 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\Header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\Header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stb_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\stb_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\glad.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\glad.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\vertexshader.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\vertexshader.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\fragmentshader.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\fragmentshader.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stbImageLoader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EBAAFF-58AD-4E14-BBE5-36A5E45328DE}|OpenGlSetup\\OpenGlSetup.vcxproj|solutionrelative:OpenGlSetup\\stbImageLoader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 368,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "shader_m.h",
+              "DocumentMoniker": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h",
+              "ToolTip": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\shader_m.h",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAwDQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-01-04T00:07:55.408Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\main.cpp",
+              "RelativeDocumentMoniker": "OpenGlSetup\\main.cpp",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\main.cpp",
+              "RelativeToolTip": "OpenGlSetup\\main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkEAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-06T10:22:44.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Header.h",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\Header.h",
+              "RelativeDocumentMoniker": "OpenGlSetup\\Header.h",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\Header.h",
+              "RelativeToolTip": "OpenGlSetup\\Header.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-11-06T12:46:43.403Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "stb_image.h",
+              "DocumentMoniker": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h",
+              "ToolTip": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\stb_image.h",
+              "ViewState": "AgIAACYBAAAAAAAAAAAAADYBAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-12-04T16:17:30.066Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "stb_image.h",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stb_image.h",
+              "RelativeDocumentMoniker": "OpenGlSetup\\stb_image.h",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stb_image.h",
+              "RelativeToolTip": "OpenGlSetup\\stb_image.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOcdAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-11-13T13:42:19.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "glad.c",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\glad.c",
+              "RelativeDocumentMoniker": "OpenGlSetup\\glad.c",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\glad.c",
+              "RelativeToolTip": "OpenGlSetup\\glad.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-12-04T16:55:06.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "model.h",
+              "DocumentMoniker": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h",
+              "ToolTip": "C:\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Users\\Public\\OpenGL\\include\\learnopengl\\model.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-12-04T16:45:13.238Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "new_scalar.cpp",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\crt\\src\\vcruntime\\new_scalar.cpp",
+              "ViewState": "AgIAABQAAAAAAAAAAAApwCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-25T15:12:44.395Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "vertexshader.vert",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\vertexshader.vert",
+              "RelativeDocumentMoniker": "OpenGlSetup\\vertexshader.vert",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\vertexshader.vert",
+              "RelativeToolTip": "OpenGlSetup\\vertexshader.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-11T12:43:16.847Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "fragmentshader.frag",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\fragmentshader.frag",
+              "RelativeDocumentMoniker": "OpenGlSetup\\fragmentshader.frag",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\fragmentshader.frag",
+              "RelativeToolTip": "OpenGlSetup\\fragmentshader.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-11T12:43:40.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "stbImageLoader.cpp",
+              "DocumentMoniker": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stbImageLoader.cpp",
+              "RelativeDocumentMoniker": "OpenGlSetup\\stbImageLoader.cpp",
+              "ToolTip": "C:\\Uni stuff\\Year 3\\Comp 3006\\Coursework\\CW2\\3016-CW2\\Code\\OpenGlSetup\\OpenGlSetup\\stbImageLoader.cpp",
+              "RelativeToolTip": "OpenGlSetup\\stbImageLoader.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-13T13:43:49.39Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
