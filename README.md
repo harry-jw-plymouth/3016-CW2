@@ -1,7 +1,11 @@
 # 3016-CW2
 
 # Video Link 
+https://youtu.be/fi5WF4a_pRE
 
+# How to run EXE
+Within the repository, navigate to code -> OpenGlSetup -> x64 -> Release -> then click 3016CW2.exe 
+All required files are located here
 # Asset Usage
 All 3d models and 2d assets used in this project do not belong to me and were downloaded from various sources on turbosquid, below is links to all 3d models used for this project. In the case of the wood texture, it was reused from the lab session
 Note: some files included here did not end up in the final project, but they do still exist in the files
