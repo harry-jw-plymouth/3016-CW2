@@ -136,13 +136,13 @@ I do however feel like the scene falls somewhat short in places, as there is not
 
 # Appendix
 ## Ai Use declaration 
-![AI form](MDIMages/AIForm.png)
+![AI form](MDImages/AIForm.png)
 For a full description of AI use please see the AI section earlier in this report. But to summarise
 - AI was used as a coding assistant
 - AI was used for some debugging
 Signature:
 
-![Signature](MDIMages/Signature.png)
+![Signature](MDImages/Signature.png)
 
 
 
