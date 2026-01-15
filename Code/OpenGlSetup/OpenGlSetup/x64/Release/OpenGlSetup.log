@@ -1,5 +1,4 @@
-﻿  glad.c
-  main.cpp
+﻿  main.cpp
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(466,52): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(466,52): warning C4244:         with
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(466,52): warning C4244:         [
@@ -12,11 +11,9 @@ C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSet
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(557,62): warning C4244:         ]
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(506,9): warning C4101: 'IndexTemp': unreferenced local variable
 C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(504,9): warning C4101: 'Variance': unreferenced local variable
-  LoadShaders.cpp
-  stbImageLoader.cpp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\OpenGlSetup\main.cpp(393): warning C4715: 'SetUpObject': not all control paths return a value
-  All 848 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  0 of 848 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   OpenGlSetup.vcxproj -> C:\Uni stuff\Year 3\Comp 3006\Coursework\CW2\3016-CW2\Code\OpenGlSetup\x64\Release\3016CW2.exe

@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/Public/Assimp/Binaries/cmake_install.cmake",
+		"C:/Users/Public/Assimp/Binaries/contrib/zlib/cmake_install.cmake",
+		"C:/Users/Public/Assimp/Binaries/code/cmake_install.cmake",
+		"C:/Users/Public/Assimp/Binaries/test/cmake_install.cmake",
+		"C:/Users/Public/Assimp/Binaries/test/headercheck/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

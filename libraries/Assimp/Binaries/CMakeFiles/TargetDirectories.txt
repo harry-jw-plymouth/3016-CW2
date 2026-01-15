@@ -1,0 +1,13 @@
+C:/Users/Public/Assimp/Binaries/CMakeFiles/uninstall.dir
+C:/Users/Public/Assimp/Binaries/CMakeFiles/UpdateAssimpLibsDebugSymbolsAndDLLs.dir
+C:/Users/Public/Assimp/Binaries/CMakeFiles/INSTALL.dir
+C:/Users/Public/Assimp/Binaries/CMakeFiles/ALL_BUILD.dir
+C:/Users/Public/Assimp/Binaries/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Public/Assimp/Binaries/contrib/zlib/CMakeFiles/zlibstatic.dir
+C:/Users/Public/Assimp/Binaries/contrib/zlib/CMakeFiles/INSTALL.dir
+C:/Users/Public/Assimp/Binaries/contrib/zlib/CMakeFiles/ALL_BUILD.dir
+C:/Users/Public/Assimp/Binaries/code/CMakeFiles/assimp.dir
+C:/Users/Public/Assimp/Binaries/code/CMakeFiles/INSTALL.dir
+C:/Users/Public/Assimp/Binaries/test/CMakeFiles/unit.dir
+C:/Users/Public/Assimp/Binaries/test/CMakeFiles/INSTALL.dir
+C:/Users/Public/Assimp/Binaries/test/headercheck/CMakeFiles/INSTALL.dir
