@@ -3,8 +3,10 @@
 # Video Link 
 https://youtu.be/fi5WF4a_pRE
 
+# How to run source code
+Source code does compile, but due to the size of libraries, could not be submitted completely to the DLE. To run please copy the libraries folder at the base of the git repository and place it at Code/OpenGlSetup/OpenGlSetup 
 # How to run EXE
-Within the repository, navigate to code -> OpenGlSetup -> x64 -> Release -> then click 3016CW2.exe 
+Within the repository, navigate to code -> OpenGlSetup -> x64 -> Release -> then click 3016CW2.exe or use the file directly submitted
 All required files are located here
 # Asset Usage
 All 3d models and 2d assets used in this project do not belong to me and were downloaded from various sources on turbosquid, below is links to all 3d models used for this project. In the case of the wood texture, it was reused from the lab session
